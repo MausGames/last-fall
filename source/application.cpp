@@ -25,8 +25,7 @@ const coreUint32      CoreApp::Settings::Platform::SteamAppID   = 0u;
 void CoreApp::Setup()
 {
     Core::Manager::Resource->Load<coreModel>("default_sphere.md3",  CORE_RESOURCE_UPDATE_AUTO,   "data/models/default_sphere.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
-    Core::Manager::Resource->Load<coreModel>("object_cube_01.md3",  CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_cube_01.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
-    Core::Manager::Resource->Load<coreModel>("object_cube_02.md3",  CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_cube_02.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
+    Core::Manager::Resource->Load<coreModel>("object_cube.md3",     CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_cube.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
     Core::Manager::Resource->Load<coreModel>("object_enemy.md3",    CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_enemy.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
     Core::Manager::Resource->Load<coreModel>("object_player.md3",   CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_player.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
 

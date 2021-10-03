@@ -21,7 +21,7 @@ cTile::cTile()noexcept
 {
     this->DefineProgram("object_tile_program");
     this->DefineTexture(0u, "text.png");
-    this->DefineModel  ("object_cube_01.md3");
+    this->DefineModel  ("object_cube.md3");
 
     this->SetSize       (coreVector3(0.9f * TILE_SCALE * 0.5f, 0.9f * TILE_SCALE * 0.5f, 0.15f * 2.5f));
     this->SetDirection  (coreVector3(0.0f,1.0f,0.0f));

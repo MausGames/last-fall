@@ -18,7 +18,7 @@ cDoor::cDoor()noexcept
 {
     this->DefineProgram("object_door_program");
     this->DefineTexture(0u, "text.png");
-    this->DefineModel  ("object_cube_02.md3");
+    this->DefineModel  ("object_cube.md3");
 
     constexpr coreFloat fFactor = (1.0f/3.0f);
 
