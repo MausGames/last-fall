@@ -1,0 +1,7 @@
+backup/
+executable/bin/
+executable/user/screenshots/
+executable/user/log.html
+projects/cmake/**/
+projects/visualstudio/.tmp/
+projects/visualstudio/.vs/
