@@ -20,6 +20,7 @@ class cEnemy final : public coreObject3D
 {
 private:
     coreFlow m_fRotation;
+    coreFlow m_fBump;
 
     coreBool m_bDisable;
     coreFlow m_bDisableTime;
@@ -46,6 +47,8 @@ public:
 
     void Configure(const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed);
     void Execute();
+
+    inline void Bump() {m_fBump = 1.0f;}
 
     inline void SetDisable    (const coreBool  bDisable)     {m_bDisable     = bDisable;}
     inline void SetAttackDelay(const coreFloat fAttackDelay) {m_fAttackDelay = fAttackDelay;}

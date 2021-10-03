@@ -12,6 +12,7 @@
 // ****************************************************************
 cEnemy::cEnemy()noexcept
 : m_fRotation    (0.0f)
+, m_fBump        (0.0f)
 , m_bDisable     (false)
 , m_bDisableTime (0.0f)
 , m_fAttackDelay (0.0f)
@@ -56,13 +57,16 @@ void cEnemy::Move()
     }
 
     m_fRotation.Update(2.0f);
+    m_fBump.UpdateMax(-5.0f, 0.0f);
     m_fAttackDelay.UpdateMax(-1.0f, 0.0f);
 
     this->Execute();
 
-    const coreVector2 vDir = coreVector2::Direction(m_fRotation);
+    const coreFloat   fScale = SIN(m_fBump * PI) + 1.0f;
+    const coreVector2 vDir   = coreVector2::Direction(m_fRotation);
 
     this->SetPosition   (coreVector3(this->GetPosition().xy(), ENEMY_SCALE));
+    this->SetSize       (coreVector3(1.0f,1.0f,1.0f) * ENEMY_SCALE * fScale);
     this->SetDirection  (coreVector3(vDir, 0.0f));
     //this->SetOrientation(coreVector3(-vDir.x*vDir.y, vDir.x*vDir.x, vDir.y));
 

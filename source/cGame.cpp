@@ -77,6 +77,7 @@ void cGame::Move()
             m_Player.SetFalling(true);
             m_Player.SetLanding(true);
             bFalling = true;
+            pEnemy->Bump();
             pEnemy->SetAttackDelay(0.5f);
             break;
         }
