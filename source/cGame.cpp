@@ -70,7 +70,7 @@ void cGame::Move()
         if(pEnemy->GetAttackDelay()) continue;
 
         const coreVector3 vDiff = m_Player.GetPosition() - pEnemy->GetPosition();
-        if((ABS(vDiff.x) < 1.5f) && (ABS(vDiff.y) < 1.5f) && (ABS(vDiff.z) < 1.5f))
+        if((ABS(vDiff.x) < 1.3f) && (ABS(vDiff.y) < 1.3f) && (ABS(vDiff.z) < 1.3f))
         {
             m_Player.AddVelocity(vDiff.xy().Normalized() * 100.0f);
             m_Player.AddVelocityHeight(50.0f);
