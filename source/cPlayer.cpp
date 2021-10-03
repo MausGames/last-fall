@@ -100,6 +100,7 @@ void cPlayer::Land()
         {
             m_fVelocityHeight = 0.0f;
             this->SetPosition(coreVector3(this->GetPosition().xy(), PLAYER_SCALE));
+            m_Shadow.SetPosition(this->GetPosition());
         }
     }
 }
