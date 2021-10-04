@@ -20,6 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\application.cpp" />
+    <ClCompile Include="..\..\..\source\cDoor.cpp" />
+    <ClCompile Include="..\..\..\source\cEnemy.cpp" />
+    <ClCompile Include="..\..\..\source\cField.cpp" />
+    <ClCompile Include="..\..\..\source\cGame.cpp" />
+    <ClCompile Include="..\..\..\source\cInterface.cpp" />
+    <ClCompile Include="..\..\..\source\cLevel.cpp" />
+    <ClCompile Include="..\..\..\source\cPlayer.cpp" />
+    <ClCompile Include="..\..\..\source\cShadow.cpp" />
+    <ClCompile Include="..\..\..\source\cTile.cpp" />
     <ClCompile Include="..\..\..\source\main.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -28,6 +37,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\source\cDoor.h" />
+    <ClInclude Include="..\..\..\source\cEnemy.h" />
+    <ClInclude Include="..\..\..\source\cField.h" />
+    <ClInclude Include="..\..\..\source\cGame.h" />
+    <ClInclude Include="..\..\..\source\cInterface.h" />
+    <ClInclude Include="..\..\..\source\cPlayer.h" />
+    <ClInclude Include="..\..\..\source\cShadow.h" />
+    <ClInclude Include="..\..\..\source\cTile.h" />
     <ClInclude Include="..\..\..\source\main.h" />
   </ItemGroup>
   <ItemGroup>
