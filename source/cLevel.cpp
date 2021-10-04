@@ -31,20 +31,18 @@ void cField::__Setup(const coreUint8 iCheckpoint)
     this->__CreateTileExt(++X, Y,   3u);
     this->__CreateTileExt(++X, Y,   2u);
     this->__CreateTileExt(++X, Y,   1u);
-
-    this->__CreateTileExt(++X, Y,   4u);
-    this->__CreateTileExt(++X, Y,   4u);
-    this->__CreateTileExt(X,   --Y, 4u);
-    this->__CreateTileExt(++X, Y,   4u);
-    this->__CreateTileExt(++X, Y,   4u);
+    this->__CreateTileExt(++X, Y,   1u);
+    this->__CreateTileExt(X,   --Y, 1u);
+    this->__CreateTileExt(++X, Y,   1u);
+    this->__CreateTileExt(++X, Y,   1u);
     this->__CreateEnemyExt(X+1, Y+1, 0u, 0.0f, 0.0f, 1.0f);
     this->__CreateEnemyExt(X+3, Y+2, 0u, 0.0f, 0.0f, 1.0f);
-    this->__CreateTileExt(X,   ++Y, 4u);
-    this->__CreateTileExt(X,   ++Y, 4u);
-    this->__CreateTileExt(++X, Y,   4u);
-    this->__CreateTileExt(++X, Y,   4u);
-    this->__CreateTileExt(X,   --Y, 4u);
-    this->__CreateTileExt(++X, Y,   4u);
+    this->__CreateTileExt(X,   ++Y, 1u);
+    this->__CreateTileExt(X,   ++Y, 1u);
+    this->__CreateTileExt(++X, Y,   1u);
+    this->__CreateTileExt(++X, Y,   1u);
+    this->__CreateTileExt(X,   --Y, 1u);
+    this->__CreateTileExt(++X, Y,   1u);
 
     nCheckpointFunc(++X, Y);
     this->__DoorMarker();
