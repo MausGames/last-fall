@@ -11,24 +11,32 @@
 
 // ****************************************************************
 cInterface::cInterface()noexcept
-: m_bIntro      (false)
+: m_Title       ()
+, m_Name        ()
+, m_Controls    ()
+, m_Message     ()
+, m_bIntro      (false)
 , m_fIntroValue (1.0f)
 {
-    m_Title.Construct   ("sadanasquare.ttf", 180u, 6u);
-    m_Title.SetCenter   (coreVector2(0.0f,0.25f));
-    m_Title.SetText     ("LAST FALL");
+    m_Title.Construct("sadanasquare.ttf", 180u, 6u);
+    m_Title.SetCenter(coreVector2(0.0f,0.25f));
+    m_Title.SetColor3(INTERFACE_COLOR);
+    m_Title.SetText  ("LAST FALL");
 
-    m_Controls1.Construct  ("sadanasquare.ttf", 80u, 4u);
-    m_Controls1.SetPosition(coreVector2(0.0f, 0.04f));
-    m_Controls1.SetCenter  (coreVector2(0.0f,-0.25f));
-    m_Controls1.SetText    ("KEYBOARD:  WASD / ARROWS");
+    m_Name.Construct  ("sadanasquare.ttf", 80u, 4u);
+    m_Name.SetPosition(coreVector2(0.0f, 0.04f));
+    m_Name.SetCenter  (coreVector2(0.0f,-0.25f));
+    m_Name.SetColor3  (INTERFACE_COLOR);
+    m_Name.SetText    ("A GAME BY MARTIN MAUERSICS");
 
-    m_Controls2.Construct  ("sadanasquare.ttf", 80u, 4u);
-    m_Controls2.SetPosition(coreVector2(0.0f,-0.06f));
-    m_Controls2.SetCenter  (coreVector2(0.0f,-0.25f));
-    m_Controls2.SetText    ("GAMEPAD:  STICK / D-PAD");
+    m_Controls.Construct  ("sadanasquare.ttf", 80u, 4u);
+    m_Controls.SetPosition(coreVector2(0.0f,-0.06f));
+    m_Controls.SetCenter  (coreVector2(0.0f,-0.25f));
+    m_Controls.SetColor3  (INTERFACE_COLOR);
+    m_Controls.SetText    ("CONTROLS:  WASD / ARROWS / GAMEPAD");
 
     m_Message.Construct("sadanasquare.ttf", 80u, 4u);
+    m_Message.SetColor3(INTERFACE_COLOR);
     m_Message.SetAlpha (0.0f);
     m_Message.SetText  ("THANK YOU FOR PLAYING");
 }
@@ -39,10 +47,10 @@ void cInterface::Render()
 {
     glDisable(GL_DEPTH_TEST);
     {
-        m_Title    .Render();
-        m_Controls1.Render();
-        m_Controls2.Render();
-        m_Message  .Render();
+        m_Title   .Render();
+        m_Name    .Render();
+        m_Controls.Render();
+        m_Message .Render();
     }
     glEnable(GL_DEPTH_TEST);
 }
@@ -56,20 +64,22 @@ void cInterface::Move()
 
     if(m_bIntro) m_fIntroValue.UpdateMax(-0.5f, 0.0f);
 
-    const coreFloat fOutro = LERPH3(0.0f, 1.0f, CLAMP((g_pGame->GetOutro() - 4.0f) * 0.5f, 0.0f, 1.0f));
-    m_Message.SetAlpha  (fOutro);
-    m_Message.SetEnabled(fOutro ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
+    const auto nSetAlphaFunc = [](coreObject2D* OUTPUT pObject, const coreFloat fAlpha)
+    {
+        pObject->SetAlpha  (fAlpha);
+        pObject->SetEnabled(fAlpha ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
+    };
 
     const coreFloat fAlpha = LERPH3(0.0f, 1.0f, m_fIntroValue);
+    const coreFloat fOutro = LERPH3(0.0f, 1.0f, CLAMP((g_pGame->GetOutro() - 4.0f) * 0.5f, 0.0f, 1.0f));
 
-    m_Title    .SetAlpha(fAlpha);
-    m_Controls1.SetAlpha(fAlpha);
-    m_Controls2.SetAlpha(fAlpha);
+    nSetAlphaFunc(&m_Title,    fAlpha);
+    nSetAlphaFunc(&m_Name,     fAlpha);
+    nSetAlphaFunc(&m_Controls, fAlpha);
+    nSetAlphaFunc(&m_Message,  fOutro);
 
-    m_Title.SetPosition(coreVector2(0.0f,0.0f));
-
-    m_Title    .Move();
-    m_Controls1.Move();
-    m_Controls2.Move();
-    m_Message  .Move();
+    m_Title   .Move();
+    m_Name    .Move();
+    m_Controls.Move();
+    m_Message .Move();
 }

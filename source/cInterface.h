@@ -7,8 +7,12 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_INTERFACE_H_
-#define _000_GUARD_INTERFACE_H_
+#ifndef _LAF_GUARD_INTERFACE_H_
+#define _LAF_GUARD_INTERFACE_H_
+
+
+// ****************************************************************
+#define INTERFACE_COLOR (coreVector3(1.0f,1.0f,1.0f) * 0.97f)
 
 
 // ****************************************************************
@@ -16,8 +20,8 @@ class cInterface final
 {
 private:
     coreLabel m_Title;
-    coreLabel m_Controls1;
-    coreLabel m_Controls2;
+    coreLabel m_Name;
+    coreLabel m_Controls;
     coreLabel m_Message;
 
     coreBool m_bIntro;
@@ -34,4 +38,4 @@ public:
 };
 
 
-#endif // _000_GUARD_INTERFACE_H_
+#endif // _LAF_GUARD_INTERFACE_H_

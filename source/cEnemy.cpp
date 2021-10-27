@@ -11,37 +11,22 @@
 
 // ****************************************************************
 cEnemy::cEnemy()noexcept
-: m_fRotation    (0.0f)
+: coreObject3D   ()
+, m_fRotation    (0.0f)
 , m_fBump        (0.0f)
 , m_bDisable     (false)
-, m_bDisableTime (0.0f)
-, m_fAttackDelay (0.0f)
+, m_fDisableTime (0.0f)
 , m_iType        (0u)
-, m_fTime        (0.0f)
-, m_fOffset      (0.0f)
-, m_fSpeed       (0.0f)
-, m_vStart       (coreVector2(0.0f,0.0f))
-, m_vVelocity    (coreVector2(0.0f,0.0f))
+, m_fJobTime     (0.0f)
+, m_fJobOffset   (0.0f)
+, m_fJobSpeed    (0.0f)
+, m_vJobPosition (coreVector2(0.0f,0.0f))
+, m_vJobVelocity (coreVector2(0.0f,0.0f))
 {
-    this->DefineProgram("object_enemy_program");
     this->DefineModel  ("object_enemy.md3");
+    this->DefineProgram("object_enemy_program");
 
-    this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * ENEMY_SCALE);
-    //this->SetColor3(coreVector3(0.2f,0.2f,0.2f));
-}
-
-
-// ****************************************************************
-cEnemy::~cEnemy()
-{
-    
-}
-
-
-// ****************************************************************
-void cEnemy::Render()
-{
-    this->coreObject3D::Render();
+    this->SetSize(coreVector3(1.0f,1.0f,1.0f) * ENEMY_SCALE);
 }
 
 
@@ -50,25 +35,23 @@ void cEnemy::Move()
 {
     if(m_bDisable)
     {
-        m_bDisableTime.Update(3.0f);
+        m_fDisableTime.Update(3.0f);
 
-        this->SetAlpha(this->GetAlpha() * LERPH3(1.0f, 0.0f, m_bDisableTime));
-        if(m_bDisableTime >= 1.0f) this->SetEnabled(CORE_OBJECT_ENABLE_NOTHING);
+        this->SetAlpha(this->GetAlpha() * LERPH3(1.0f, 0.0f, m_fDisableTime));   // # base-value set by field class
+        if(m_fDisableTime >= 1.0f) this->SetEnabled(CORE_OBJECT_ENABLE_NOTHING);
     }
 
-    m_fRotation.Update(2.0f);
-    m_fBump.UpdateMax(-5.0f, 0.0f);
-    m_fAttackDelay.UpdateMax(-1.0f, 0.0f);
-
     this->Execute();
+
+    m_fRotation.UpdateMod( 2.0f, 2.0f*PI);
+    m_fBump    .UpdateMax(-5.0f, 0.0f);
 
     const coreFloat   fScale = SIN(m_fBump * PI) + 1.0f;
     const coreVector2 vDir   = coreVector2::Direction(m_fRotation);
 
-    this->SetPosition   (coreVector3(this->GetPosition().xy(), ENEMY_SCALE));
-    this->SetSize       (coreVector3(1.0f,1.0f,1.0f) * ENEMY_SCALE * fScale);
-    this->SetDirection  (coreVector3(vDir, 0.0f));
-    //this->SetOrientation(coreVector3(-vDir.x*vDir.y, vDir.x*vDir.x, vDir.y));
+    this->SetPosition (coreVector3(this->GetPosition().xy(), ENEMY_SCALE));
+    this->SetSize     (coreVector3(1.0f,1.0f,1.0f) * ENEMY_SCALE * fScale);
+    this->SetDirection(coreVector3(vDir, 0.0f));
 
     this->coreObject3D::Move();
 }
@@ -77,66 +60,77 @@ void cEnemy::Move()
 // ****************************************************************
 void cEnemy::Configure(const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed)
 {
-    m_iType   = iType;
-    m_fTime   = fTimeOffset;
-    m_fOffset = fMoveOffset * TILE_SCALE;
-    m_fSpeed  = fSpeed;
-    m_vStart  = this->GetPosition().xy();
+    m_iType        = iType;
+    m_fJobTime     = fTimeOffset;
+    m_fJobOffset   = fMoveOffset;
+    m_fJobSpeed    = fSpeed;
+    m_vJobPosition = this->GetPosition().xy();
+    m_vJobVelocity = coreVector2(0.0f,0.0f);
 }
 
 
 // ****************************************************************
 void cEnemy::Execute()
 {
-    m_fTime.Update(m_fSpeed);
+    m_fJobTime.Update(m_fJobSpeed);
 
-    if(m_iType == 1u || m_iType == 2u)   // move back and forth X Y
+    switch(m_iType)
     {
-        const coreVector2 vFrom   = m_vStart;
-        const coreVector2 vTo     = vFrom + ((m_iType == 1u) ? coreVector2(m_fOffset, 0.0f) : coreVector2(0.0f, m_fOffset));
-        const coreVector2 vNewPos = LERP(vFrom, vTo, 0.5f + 0.5f * SIN(m_fTime));
+    default: ASSERT(false)
 
-        this->SetPosition(coreVector3(vNewPos, this->GetPosition().z));
-    }
-    else if(m_iType == 3u)   // move in a circle
-    {
-        const coreVector2 vDir    = coreVector2::Direction(m_fTime);
-        const coreVector2 vNewPos = m_vStart + vDir * m_fOffset;
+    // do nothing
+    case 0u:
+        break;
 
-        this->SetPosition(coreVector3(vNewPos, this->GetPosition().z));
-    }
-    else if(m_iType == 4u)   // follow the player
-    {
-        const coreList<cTile*>* pTileList = g_pGame->GetField()->GetTileList();   // TODO: hack
-        const coreUintW iLastLevelIndex = pTileList->size() - 1u - 16u;
-
-        coreUint32 iTotal = 0u;
-        for(coreUintW i = iLastLevelIndex + 1u, ie = pTileList->size(); i < ie; ++i)
+    // move back and forth
+    case 1u:
+    case 2u:
         {
-            const coreUint8 iValue = (*pTileList)[i]->GetValue();
-
-            iTotal += iValue;
-        }
-
-        if(iTotal <= 1u)
-        {
-            this->SetDisable(true);
-            g_pGame->SetLastCheckpoint(GAME_CHECKPOINT_END);
-        }
-
-        const cTile* pLastCHeckpoint = (*pTileList)[iLastLevelIndex];
-        if(pLastCHeckpoint->GetDisable())
-        {
-            const cPlayer* pPlayer = g_pGame->GetPlayer();
-
-            const coreVector2 vMove = (pPlayer->GetPosition().xy() - this->GetPosition().xy()).Normalized();
-
-            const coreFloat fBreak = POW(1.0f - 1.0f * (1.0f/60.0f), TIME * 60.0f);
-
-            m_vVelocity = (m_vVelocity + vMove * (60.0f * TIME)) * fBreak;
-            const coreVector2 vNewPos = this->GetPosition().xy() + m_vVelocity * TIME;
+            const coreVector2 vFrom   = m_vJobPosition;
+            const coreVector2 vTo     = vFrom + ((m_iType == 1u) ? coreVector2(m_fJobOffset, 0.0f) : coreVector2(0.0f, m_fJobOffset));
+            const coreVector2 vNewPos = LERP(vFrom, vTo, 0.5f + 0.5f * SIN(m_fJobTime));
 
             this->SetPosition(coreVector3(vNewPos, this->GetPosition().z));
         }
+        break;
+
+    // move in a circle
+    case 3u:
+        {
+            const coreVector2 vDir    = coreVector2::Direction(m_fJobTime);
+            const coreVector2 vNewPos = m_vJobPosition + vDir * m_fJobOffset;
+
+            this->SetPosition(coreVector3(vNewPos, this->GetPosition().z));
+        }
+        break;
+
+    // follow the player
+    case 4u:
+        {
+            const cPlayer*          pPlayer     = g_pGame->GetPlayer();
+            const coreList<cTile*>* papTileList = g_pGame->GetField()->GetTileList();
+            const coreUintW         iFinalIndex = g_pGame->GetField()->GetFinalCheckpointIndex();
+
+            const coreUint32 iTotal = g_pGame->GetField()->CalculateTileValue(iFinalIndex + 1u, papTileList->size());
+
+            if((iTotal <= 1u) && !pPlayer->GetFalling())
+            {
+                m_bDisable = true;
+                g_pGame->SetLastCheckpoint(GAME_CHECKPOINT_END);
+            }
+
+            if((*papTileList)[iFinalIndex]->GetDisable())
+            {
+                const coreVector2 vDir = (pPlayer->GetPosition().xy() - this->GetPosition().xy()).Normalized();
+
+                m_vJobVelocity += vDir * (60.0f * TIME);
+                m_vJobVelocity *= POW(1.0f - 1.0f * (1.0f/60.0f), 60.0f * TIME);
+
+                const coreVector2 vNewPos = this->GetPosition().xy() + m_vJobVelocity * TIME;
+
+                this->SetPosition(coreVector3(vNewPos, this->GetPosition().z));
+            }
+        }
+        break;
     }
 }

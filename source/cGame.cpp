@@ -11,24 +11,25 @@
 
 // ****************************************************************
 cGame::cGame()noexcept
-: m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 2u : 0u)
+: m_Player          ()
+, m_Field           ()
+, m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 2u : 0u)   // debug start
+, m_fOutro          (0.0f)
 {
     m_Player.SetPosition(coreVector3(0.0f,0.0f,0.0f));
 }
 
 
 // ****************************************************************
-cGame::~cGame()
-{
-    
-}
-
-
-// ****************************************************************
 void cGame::Render()
 {
-    m_Player.Render();
-    m_Field .Render();
+    if(m_Player.GetFalling()) m_Player.Render();   // for correct blending behind disappearing field
+
+    m_Field.Render();
+    g_pShadow->Apply();
+    m_Player.Render();   // to overdraw shadow artifacts
+
+    m_Field.RenderTransparent();
 }
 
 
@@ -39,8 +40,8 @@ void cGame::Move()
 
     coreBool bFalling = true;
 
-    const coreList<cTile*>* pTileList = m_Field.GetTileList();
-    FOR_EACH(it, *pTileList)
+    const coreList<cTile*>* papTileList = m_Field.GetTileList();
+    FOR_EACH(it, *papTileList)
     {
         cTile* pTile = (*it);
         if(pTile->GetDisable()) continue;
@@ -50,8 +51,8 @@ void cGame::Move()
         {
             if(!m_Player.GetFalling()) pTile->SetPressed(true);
 
-            const coreFloat vDiff2 = m_Player.GetPosition().z - pTile->GetPosition().z;
-            if(ABS(vDiff2) < PLAYER_SCALE * 3.0f)
+            const coreFloat vDiffHeight = m_Player.GetPosition().z - pTile->GetPosition().z;
+            if(ABS(vDiffHeight) < PLAYER_SCALE * 3.0f)
             {
                 if(m_Player.GetVelocityHeight() <= 0.0f) bFalling = false;
             }
@@ -62,29 +63,32 @@ void cGame::Move()
         }
     }
 
-    const coreList<cEnemy*>* pEnemyList = m_Field.GetEnemyList();
-    FOR_EACH(it, *pEnemyList)
+    if(m_Player.GetVelocityHeight() <= 0.0f)
     {
-        cEnemy* pEnemy = (*it);
-        if(pEnemy->GetDisable()) continue;
-        if(pEnemy->GetAttackDelay()) continue;
-
-        const coreVector3 vDiff = m_Player.GetPosition() - pEnemy->GetPosition();
-        if((ABS(vDiff.x) < 1.3f) && (ABS(vDiff.y) < 1.3f) && (ABS(vDiff.z) < 1.3f))
+        const coreList<cEnemy*>* papEnemyList = m_Field.GetEnemyList();
+        FOR_EACH(it, *papEnemyList)
         {
-            m_Player.AddVelocity(vDiff.xy().Normalized() * 100.0f);
-            m_Player.AddVelocityHeight(50.0f);
-            m_Player.SetFalling(true);
-            m_Player.SetLanding(true);
-            bFalling = true;
-            pEnemy->Bump();
-            pEnemy->SetAttackDelay(0.5f);
-            break;
+            cEnemy* pEnemy = (*it);
+            if(pEnemy->GetDisable()) continue;
+
+            const coreVector3 vDiff = m_Player.GetPosition() - pEnemy->GetPosition();
+            if((ABS(vDiff.x) < 1.4f) && (ABS(vDiff.y) < 1.4f) && (ABS(vDiff.z) < 1.4f))
+            {
+                m_Player.AddVelocity      (vDiff.xy().Normalized() * 100.0f);
+                m_Player.AddVelocityHeight(50.0f);
+                m_Player.SetFalling       (true);
+                m_Player.SetLanding       (true);
+
+                pEnemy->Bump();
+
+                bFalling = true;
+                break;
+            }
         }
     }
 
-    const coreList<cDoor*>* pDoorList = m_Field.GetDoorList();
-    FOR_EACH(it, *pDoorList)
+    const coreList<cDoor*>* papDoorList = m_Field.GetDoorList();
+    FOR_EACH(it, *papDoorList)
     {
         cDoor* pDoor = (*it);
         if(pDoor->GetDisable()) continue;
@@ -102,6 +106,7 @@ void cGame::Move()
         m_Player.SetFalling(bFalling);
         if(!bFalling) m_Player.SetLanding(false);
     }
+
     m_Player.Land();
 
     if(m_Player.GetPosition().z < GAME_HEIGHT * -1.0f)
@@ -111,6 +116,7 @@ void cGame::Move()
             m_fOutro.Update(1.0f);
 
             const coreFloat fAlpha = LERPH3(1.0f, 0.0f, MIN(m_fOutro * 0.2f, 1.0f));
+
             m_Player.SetSize (coreVector3(1.0f,1.0f,1.0f) * PLAYER_SCALE * fAlpha);
             m_Player.SetAlpha(fAlpha);
         }
@@ -120,9 +126,8 @@ void cGame::Move()
 
             const cTile* pFirst = m_Field.GetTileList()->front();
 
-            m_Player.SetPosition(coreVector3(pFirst->GetPosition().xy(), m_Player.GetPosition().z + GAME_HEIGHT * 2.0f));
-            //m_Player.SetVelocity(coreVector2(0.0f,0.0f));
-            m_Player.SetLanding (true);
+            m_Player.SetFullPosition(coreVector3(pFirst->GetPosition().xy(), m_Player.GetPosition().z + GAME_HEIGHT * 2.0f));
+            m_Player.SetLanding     (true);
         }
     }
 
@@ -130,6 +135,8 @@ void cGame::Move()
 
     m_Field.SetAlpha(fAlpha);
     m_Field.Move();
+
+    g_pShadow->SetAlpha(fAlpha);
 
     const coreVector3 vCamDir = CAMERA_DIRECTION;
     const coreVector3 vCamOri = CAMERA_ORIENTATION;

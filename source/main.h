@@ -24,8 +24,8 @@
 //*----------------------------------------------------------------------------*//
 //////////////////////////////////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_MAIN_H_
-#define _000_GUARD_MAIN_H_
+#ifndef _LAF_GUARD_MAIN_H_
+#define _LAF_GUARD_MAIN_H_
 
 
 // ****************************************************************
@@ -38,9 +38,6 @@
 #define CAMERA_POSITION    (coreVector3(0.0f,-1.0f, 1.0f).Normalized() * 50.0f)
 #define CAMERA_DIRECTION   (coreVector3(0.0f, 1.0f,-1.0f).Normalized())
 #define CAMERA_ORIENTATION (coreVector3(0.0f, 0.0f, 1.0f))
-
-#undef COLOR_ORANGE
-#define COLOR_ORANGE (coreVector3(1.000f, 0.543f, 0.227f))
 
 
 // ****************************************************************
@@ -62,4 +59,4 @@ extern cGame*      const g_pGame;
 extern cShadow*    const g_pShadow;
 
 
-#endif // _000_GUARD_MAIN_H_
+#endif // _LAF_GUARD_MAIN_H_

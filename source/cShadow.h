@@ -7,8 +7,8 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_SHADOW_H_
-#define _000_GUARD_SHADOW_H_
+#ifndef _LAF_GUARD_SHADOW_H_
+#define _LAF_GUARD_SHADOW_H_
 
 
 // ****************************************************************
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif // _000_GUARD_SHADOW_H_
+#endif // _LAF_GUARD_SHADOW_H_

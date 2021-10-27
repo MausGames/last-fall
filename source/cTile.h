@@ -7,14 +7,14 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_TILE_H_
-#define _000_GUARD_TILE_H_
+#ifndef _LAF_GUARD_TILE_H_
+#define _LAF_GUARD_TILE_H_
 
 
 // ****************************************************************
-#define TILE_NUMERS (5u)
-#define TILE_SCALE  (6.0f)
-
+#define TILE_SCALE      (6.0f)
+#define TILE_TEXSIZE    (1.0f/3.0f)
+#define TILE_NUMBERS    (5u)
 #define TILE_CHECKPOINT (0xFFu)
 
 
@@ -30,19 +30,17 @@ private:
     coreFlow  m_fPressedShift;
 
     coreBool m_bDisable;
-    coreFlow m_bDisableTime;
+    coreFlow m_fDisableTime;
 
 
 public:
     cTile()noexcept;
-    ~cTile()final;
 
     DISABLE_COPY(cTile)
 
-    void Render()final;
-    void Move  ()final;
+    void Move()final;
 
-    inline void SetValue     (const coreUint8 iValue)      {m_iValue      = iValue; ASSERT((iValue <= TILE_NUMERS) || iValue == TILE_CHECKPOINT)}
+    inline void SetValue     (const coreUint8 iValue)      {m_iValue      = iValue; ASSERT((iValue <= TILE_NUMBERS) || (iValue == TILE_CHECKPOINT))}
     inline void SetCheckpoint(const coreUint8 iCheckpoint) {m_iCheckpoint = iCheckpoint;}
     inline void SetPressed   (const coreBool  bPressed)    {m_bPressed    = bPressed;}
 
@@ -51,4 +49,4 @@ public:
 };
 
 
-#endif // _000_GUARD_TILE_H_
+#endif // _LAF_GUARD_TILE_H_

@@ -7,15 +7,15 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_PLAYER_H_
-#define _000_GUARD_PLAYER_H_
+#ifndef _LAF_GUARD_PLAYER_H_
+#define _LAF_GUARD_PLAYER_H_
 
 
 // ****************************************************************
 #define PLAYER_SCALE               (1.0f)
 #define PLAYER_ACCELERATION        (220.0f)
-#define PLAYER_BRAKE               (10.0f)
 #define PLAYER_ACCELERATION_HEIGHT (100.0f)
+#define PLAYER_BRAKE               (10.0f)
 #define PLAYER_BRAKE_HEIGHT        (0.5f)
 
 
@@ -34,12 +34,10 @@ private:
 
 public:
     cPlayer()noexcept;
-    ~cPlayer()final;
 
     DISABLE_COPY(cPlayer)
 
-    void Render()final;
-    void Move  ()final;
+    void Move()final;
 
     void RenderShadow();
 
@@ -48,15 +46,17 @@ public:
     inline void AddVelocity      (const coreVector2 vVelocity) {m_vVelocity       += vVelocity;}
     inline void AddVelocityHeight(const coreFloat   fVelocity) {m_fVelocityHeight += fVelocity;}
 
+    void        SetFullPosition  (const coreVector3 vPosition);
     inline void SetVelocity      (const coreVector2 vVelocity) {m_vVelocity       = vVelocity;}
     inline void SetVelocityHeight(const coreFloat   fVelocity) {m_fVelocityHeight = fVelocity;}
     inline void SetFalling       (const coreBool    bFalling)  {m_bFalling        = bFalling;}
     inline void SetLanding       (const coreBool    bLanding)  {m_bLanding        = bLanding;}
 
-    inline const coreFloat& GetVelocityHeight()const {return m_fVelocityHeight;}
-    inline const coreBool&  GetFalling       ()const {return m_bFalling;}
-    inline const coreBool&  GetLanding       ()const {return m_bLanding;}
+    inline const coreVector2& GetVelocity      ()const {return m_vVelocity;}
+    inline const coreFloat&   GetVelocityHeight()const {return m_fVelocityHeight;}
+    inline const coreBool&    GetFalling       ()const {return m_bFalling;}
+    inline const coreBool&    GetLanding       ()const {return m_bLanding;}
 };
 
 
-#endif // _000_GUARD_PLAYER_H_
+#endif // _LAF_GUARD_PLAYER_H_

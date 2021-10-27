@@ -8,11 +8,7 @@
 /////////////////////////////////////////////////////
 
 
-varying float v_v1Height;
-
-
 void FragmentMain()
 {
-    if(v_v1Height >= 0.05) discard;
     gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
 }

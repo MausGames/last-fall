@@ -7,8 +7,8 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_ENEMY_H_
-#define _000_GUARD_ENEMY_H_
+#ifndef _LAF_GUARD_ENEMY_H_
+#define _LAF_GUARD_ENEMY_H_
 
 
 // ****************************************************************
@@ -23,39 +23,30 @@ private:
     coreFlow m_fBump;
 
     coreBool m_bDisable;
-    coreFlow m_bDisableTime;
-
-    coreFlow m_fAttackDelay;
+    coreFlow m_fDisableTime;
 
     coreUint8   m_iType;
-    coreFlow    m_fTime;     // time offset with init
-    coreFloat   m_fOffset;   // spatial offset
-    coreFloat   m_fSpeed;
-    coreVector2 m_vStart;
-
-    coreVector2 m_vVelocity;
+    coreFlow    m_fJobTime;     // time offset
+    coreFloat   m_fJobOffset;   // move offset
+    coreFloat   m_fJobSpeed;
+    coreVector2 m_vJobPosition;
+    coreVector2 m_vJobVelocity;
 
 
 public:
     cEnemy()noexcept;
-    ~cEnemy()final;
 
     DISABLE_COPY(cEnemy)
 
-    void Render()final;
-    void Move  ()final;
+    void Move()final;
 
     void Configure(const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed);
     void Execute();
 
     inline void Bump() {m_fBump = 1.0f;}
 
-    inline void SetDisable    (const coreBool  bDisable)     {m_bDisable     = bDisable;}
-    inline void SetAttackDelay(const coreFloat fAttackDelay) {m_fAttackDelay = fAttackDelay;}
-
-    inline const coreBool&  GetDisable    ()const {return m_bDisable;}
-    inline const coreFloat& GetAttackDelay()const {return m_fAttackDelay;}
+    inline const coreBool& GetDisable()const {return m_bDisable;}
 };
 
 
-#endif // _000_GUARD_ENEMY_H_
+#endif // _LAF_GUARD_ENEMY_H_

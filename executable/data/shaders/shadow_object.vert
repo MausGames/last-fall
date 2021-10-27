@@ -8,11 +8,7 @@
 /////////////////////////////////////////////////////
 
 
-varying float v_v1Height;
-
-
 void VertexMain()
 {
-    v_v1Height  = a_v3RawPosition.z;
     gl_Position = coreObject3DPositionRaw();
 }

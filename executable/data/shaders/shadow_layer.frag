@@ -10,5 +10,5 @@
 
 void FragmentMain()
 {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.4);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.4 * u_v4Color.a);
 }

@@ -7,14 +7,13 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_GAME_H_
-#define _000_GUARD_GAME_H_
+#ifndef _LAF_GUARD_GAME_H_
+#define _LAF_GUARD_GAME_H_
 
 
 // ****************************************************************
-#define GAME_HEIGHT           (30.0f)
-#define GAME_CHECKPOINT_FINAL (12u)
-#define GAME_CHECKPOINT_END   (0xFFu)
+#define GAME_HEIGHT         (30.0f)
+#define GAME_CHECKPOINT_END (0xFFu)
 
 
 // ****************************************************************
@@ -25,13 +24,11 @@ private:
     cField  m_Field;
 
     coreUint8 m_iLastCheckpoint;
-
-    coreFlow m_fOutro;
+    coreFlow  m_fOutro;
 
 
 public:
     cGame()noexcept;
-    ~cGame();
 
     DISABLE_COPY(cGame)
 
@@ -40,7 +37,7 @@ public:
 
     void RenderShadow();
 
-    inline void SetLastCheckpoint(const coreUint8 ilastCheckpoint) {if(m_iLastCheckpoint < ilastCheckpoint) m_iLastCheckpoint = ilastCheckpoint;}
+    inline void SetLastCheckpoint(const coreUint8 iLastCheckpoint) {if(m_iLastCheckpoint < iLastCheckpoint) m_iLastCheckpoint = iLastCheckpoint;}
 
     inline cPlayer*         GetPlayer()      {return &m_Player;}
     inline cField*          GetField ()      {return &m_Field;}
@@ -48,4 +45,4 @@ public:
 };
 
 
-#endif // _000_GUARD_GAME_H_
+#endif // _LAF_GUARD_GAME_H_

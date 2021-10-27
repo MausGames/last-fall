@@ -11,35 +11,17 @@
 
 // ****************************************************************
 cDoor::cDoor()noexcept
-: m_iCheckStart  (0u)
-, m_iCheckEnd    (0u)
+: coreObject3D   ()
+, m_iCheckFrom   (0u)
+, m_iCheckTo     (0u)
 , m_bDisable     (false)
-, m_bDisableTime (0.0f)
+, m_fDisableTime (0.0f)
 {
-    this->DefineProgram("object_door_program");
-    this->DefineTexture(0u, "text.png");
     this->DefineModel  ("object_cube.md3");
+    this->DefineProgram("object_door_program");
 
-    constexpr coreFloat fFactor = (1.0f/3.0f);
-
-    this->SetSize     (coreVector3(1.0f,1.0f,1.0f) * DOOR_SCALE);
-    this->SetColor3   (coreVector3(0.2f,0.2f,0.2f));
-    this->SetTexSize  (coreVector2(1.0f,1.0f) * fFactor);
-    this->SetTexOffset(coreVector2(1.0f,1.0f) * fFactor);
-}
-
-
-// ****************************************************************
-cDoor::~cDoor()
-{
-    
-}
-
-
-// ****************************************************************
-void cDoor::Render()
-{
-    this->coreObject3D::Render();
+    this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * DOOR_SCALE);
+    this->SetColor3(coreVector3(0.2f,0.2f,0.2f));
 }
 
 
@@ -48,31 +30,24 @@ void cDoor::Move()
 {
     if(!this->IsEnabled(CORE_OBJECT_ENABLE_MOVE)) return;
 
-    coreUint32 iTotal = 0u;
-
-    const coreList<cTile*>* pTileList = g_pGame->GetField()->GetTileList();
-    for(coreUintW i = m_iCheckStart, ie = m_iCheckEnd; i < ie; ++i)
+    if(!m_bDisable)
     {
-        const coreUint8 iValue = (*pTileList)[i]->GetValue();
-
-        if(iValue != TILE_CHECKPOINT) iTotal += iValue;
-    }
-
-    if(iTotal <= 1u)
-    {
-        m_bDisable = true;
+        const coreUint32 iTotal = g_pGame->GetField()->CalculateTileValue(m_iCheckFrom, m_iCheckTo);
+        if(iTotal <= 1u) m_bDisable = true;
     }
 
     if(m_bDisable)
     {
-        m_bDisableTime.Update(3.0f);
+        m_fDisableTime.Update(3.0f);
 
-        this->SetAlpha(this->GetAlpha() * LERPH3(1.0f, 0.0f, m_bDisableTime));
-        if(m_bDisableTime >= 1.0f) this->SetEnabled(CORE_OBJECT_ENABLE_NOTHING);
+        this->SetAlpha(this->GetAlpha() * LERPH3(1.0f, 0.0f, m_fDisableTime));   // # base-value set by field class
+        if(m_fDisableTime >= 1.0f) this->SetEnabled(CORE_OBJECT_ENABLE_NOTHING);
     }
 
+    const coreFloat fScale = LERPH3(1.0f, 1.1f, m_fDisableTime);
+
     this->SetPosition(coreVector3(this->GetPosition().xy(), DOOR_SCALE));
-    this->SetSize    (coreVector3(1.0f,1.0f,1.0f) * DOOR_SCALE * LERPH3(1.0f, 1.1f, m_bDisableTime));
+    this->SetSize    (coreVector3(1.0f,1.0f,1.0f) * DOOR_SCALE * fScale);
 
     this->coreObject3D::Move();
 }

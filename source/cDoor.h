@@ -7,8 +7,8 @@
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
 #pragma once
-#ifndef _000_GUARD_DOOR_H_
-#define _000_GUARD_DOOR_H_
+#ifndef _LAF_GUARD_DOOR_H_
+#define _LAF_GUARD_DOOR_H_
 
 
 // ****************************************************************
@@ -19,26 +19,24 @@
 class cDoor final : public coreObject3D
 {
 private:
-    coreUintW m_iCheckStart;
-    coreUintW m_iCheckEnd;
+    coreUintW m_iCheckFrom;
+    coreUintW m_iCheckTo;
 
     coreBool m_bDisable;
-    coreFlow m_bDisableTime;
+    coreFlow m_fDisableTime;
 
 
 public:
     cDoor()noexcept;
-    ~cDoor()final;
 
     DISABLE_COPY(cDoor)
 
-    void Render()final;
-    void Move  ()final;
+    void Move()final;
 
-    inline void SetCheck(const coreUintW iStart, const coreUintW iEnd) {ASSERT(iStart < iEnd) m_iCheckStart = iStart; m_iCheckEnd = iEnd;}
+    inline void SetCheck(const coreUintW iFrom, const coreUintW iTo) {ASSERT(iFrom < iTo) m_iCheckFrom = iFrom; m_iCheckTo = iTo;}
 
     inline const coreBool& GetDisable()const {return m_bDisable;}
 };
 
 
-#endif // _000_GUARD_DOOR_H_
+#endif // _LAF_GUARD_DOOR_H_

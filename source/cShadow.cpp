@@ -11,6 +11,7 @@
 
 // ****************************************************************
 cShadow::cShadow()noexcept
+: coreFullscreen ()
 {
     this->DefineProgram("shadow_layer_program");
 

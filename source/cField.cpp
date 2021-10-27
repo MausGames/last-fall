@@ -11,15 +11,35 @@
 
 // ****************************************************************
 cField::cField()noexcept
-: m_aTileMemory   (sizeof(cTile),        128u)
-, m_aEnemyMemory  (sizeof(cEnemy),       64u)
-, m_aDoorMemory   (sizeof(cDoor),        16u)
-, m_aShadowMemory (sizeof(coreObject3D), 64u)
-, m_iDoorMarker   (0u)
-, m_fAlpha        (1.0f)
-, m_iLastX        (0)
-, m_iLastY        (0)
+: m_apTile                {}
+, m_apEnemy               {}
+, m_apDoor                {}
+, m_apShadow              {}
+, m_TileList              (FIELD_RESERVE_TILES)
+, m_EnemyList             (FIELD_RESERVE_ENEMIES)
+, m_DoorList              (FIELD_RESERVE_DOORS)
+, m_ShadowList            (FIELD_RESERVE_ENEMIES)
+, m_TileMemory            (sizeof(cTile),        FIELD_RESERVE_TILES)
+, m_EnemyMemory           (sizeof(cEnemy),       FIELD_RESERVE_ENEMIES)
+, m_DoorMemory            (sizeof(cDoor),        FIELD_RESERVE_DOORS)
+, m_ShadowMemory          (sizeof(coreObject3D), FIELD_RESERVE_ENEMIES)
+, m_fAlpha                (1.0f)
+, m_iFinalCheckpoint      (0u)
+, m_iFinalCheckpointIndex (0u)
+, m_iDoorMarker           (0u)
+, m_iLastX                (0)
+, m_iLastY                (0)
 {
+    m_apTile  .reserve(FIELD_RESERVE_TILES);
+    m_apEnemy .reserve(FIELD_RESERVE_ENEMIES);
+    m_apDoor  .reserve(FIELD_RESERVE_DOORS);
+    m_apShadow.reserve(FIELD_RESERVE_ENEMIES);
+
+    m_TileList  .DefineProgram("object_tile_inst_program");
+    m_EnemyList .DefineProgram("object_enemy_inst_program");
+    m_DoorList  .DefineProgram("object_door_inst_program");
+    m_ShadowList.DefineProgram("shadow_object_inst_program");
+
     this->Load(0u);
 }
 
@@ -34,68 +54,57 @@ cField::~cField()
 // ****************************************************************
 void cField::Render()
 {
-    FOR_EACH(it, m_Enemy) if(!(*it)->GetDisable()) (*it)->Render();
-    FOR_EACH(it, m_Door)  if(!(*it)->GetDisable()) (*it)->Render();
-    FOR_EACH(it, m_Tile)  if(!(*it)->GetDisable()) (*it)->Render();   // later, to improve object fade
-
-    coreList<coreObject3D*> apSort;
-    FOR_EACH(it, m_Door)  if( (*it)->GetDisable()) apSort.push_back(*it);   // TODO: ordering between all transparent objects important !
-    FOR_EACH(it, m_Tile)  if( (*it)->GetDisable()) apSort.push_back(*it);
-    FOR_EACH(it, m_Enemy) if( (*it)->GetDisable()) apSort.push_back(*it);
-
-    std::sort(apSort.begin(), apSort.end(), [](const coreObject3D* a, const coreObject3D* b)
-    {
-        return (a->GetPosition().y > b->GetPosition().y);
-    });
-
-    FOR_EACH(it, apSort)
-    {
-        (*it)->Render();
-    }
-
-    g_pShadow->Apply();
+    m_EnemyList.Render();
+    m_DoorList .Render();
+    m_TileList .Render();   // later, to improve object fade
 }
 
 
 // ****************************************************************
 void cField::Move()
 {
-    FOR_EACH(it, m_Tile)
+    FOR_EACH(it, m_apTile)  {(*it)->SetAlpha(m_fAlpha); if((*it)->GetDisable()) {m_TileList .UnbindObject(*it); (*it)->Move();}}
+    FOR_EACH(it, m_apEnemy) {(*it)->SetAlpha(m_fAlpha); if((*it)->GetDisable()) {m_EnemyList.UnbindObject(*it); (*it)->Move();}}
+    FOR_EACH(it, m_apDoor)  {(*it)->SetAlpha(m_fAlpha); if((*it)->GetDisable()) {m_DoorList .UnbindObject(*it); (*it)->Move();}}
+
+    FOR_EACH(it, m_apShadow)
     {
-        (*it)->SetAlpha(m_fAlpha);
-        (*it)->Move();
+        const coreUintW iIndex = m_apShadow.index(it);
+        const cEnemy*   pEnemy = m_apEnemy[iIndex];
+
+        (*it)->SetPosition(pEnemy->GetPosition() + coreVector3(0.0f, 0.0f, -ENEMY_SCALE));
+        (*it)->SetEnabled (pEnemy->GetDisable() ? CORE_OBJECT_ENABLE_NOTHING : CORE_OBJECT_ENABLE_ALL);
     }
 
-    FOR_EACH(it, m_Enemy)
-    {
-        (*it)->SetAlpha(m_fAlpha);
-        (*it)->Move();
-    }
+    m_TileList  .MoveNormal();
+    m_EnemyList .MoveNormal();
+    m_DoorList  .MoveNormal();
+    m_ShadowList.MoveNormal();
+}
 
-    FOR_EACH(it, m_Door)
-    {
-        (*it)->SetAlpha(m_fAlpha);
-        (*it)->Move();
-    }
 
-    FOR_EACH(it, m_Shadow)
-    {
-        const coreUintW iIndex = m_Shadow.index(it);
+// ****************************************************************
+void cField::RenderTransparent()
+{
+    coreList<coreObject3D*> apSort;
 
-        (*it)->SetPosition(m_Enemy[iIndex]->GetPosition());
-        (*it)->SetEnabled (m_Enemy[iIndex]->IsEnabled(CORE_OBJECT_ENABLE_ALL) ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
-        (*it)->Move();
-    }
+    FOR_EACH(it, m_apTile)  if((*it)->GetDisable()) apSort.push_back(*it);
+    FOR_EACH(it, m_apEnemy) if((*it)->GetDisable()) apSort.push_back(*it);
+    FOR_EACH(it, m_apDoor)  if((*it)->GetDisable()) apSort.push_back(*it);
+
+    std::sort(apSort.begin(), apSort.end(), [](const coreObject3D* a, const coreObject3D* b)
+    {
+        return (a->GetPosition().y > b->GetPosition().y);
+    });
+
+    FOR_EACH(it, apSort) (*it)->Render();
 }
 
 
 // ****************************************************************
 void cField::RenderShadow()
 {
-    FOR_EACH(it, m_Shadow)
-    {
-        (*it)->Render();
-    }
+    m_ShadowList.Render();
 }
 
 
@@ -110,23 +119,45 @@ void cField::Load(const coreUint8 iCheckpoint)
 // ****************************************************************
 void cField::Unload()
 {
-    FOR_EACH(it, m_Tile)   POOLED_DELETE(m_aTileMemory,   *it)
-    FOR_EACH(it, m_Enemy)  POOLED_DELETE(m_aEnemyMemory,  *it)
-    FOR_EACH(it, m_Door)   POOLED_DELETE(m_aDoorMemory,   *it)
-    FOR_EACH(it, m_Shadow) POOLED_DELETE(m_aShadowMemory, *it)
+    FOR_EACH(it, m_apTile)   POOLED_DELETE(m_TileMemory,   *it)
+    FOR_EACH(it, m_apEnemy)  POOLED_DELETE(m_EnemyMemory,  *it)
+    FOR_EACH(it, m_apDoor)   POOLED_DELETE(m_DoorMemory,   *it)
+    FOR_EACH(it, m_apShadow) POOLED_DELETE(m_ShadowMemory, *it)
 
-    m_Tile  .clear();
-    m_Enemy .clear();
-    m_Door  .clear();
-    m_Shadow.clear();
+    m_apTile  .clear();
+    m_apEnemy .clear();
+    m_apDoor  .clear();
+    m_apShadow.clear();
+
+    m_TileList  .Clear();
+    m_EnemyList .Clear();
+    m_DoorList  .Clear();
+    m_ShadowList.Clear();
+}
+
+
+// ****************************************************************
+coreUint32 cField::CalculateTileValue(const coreUintW iFrom, const coreUintW iTo)const
+{
+    coreUint32 iTotal = 0u;
+
+    for(coreUintW i = iFrom; i < iTo; ++i)
+    {
+        const coreUint8 iValue = m_apTile[i]->GetValue();
+        if(iValue != TILE_CHECKPOINT) iTotal += iValue;
+    }
+
+    return iTotal;
 }
 
 
 // ****************************************************************
 RETURN_RESTRICT cTile* cField::__CreateTile()
 {
-    cTile* pTile = POOLED_NEW(m_aTileMemory, cTile);
-    m_Tile.push_back(pTile);
+    cTile* pTile = POOLED_NEW(m_TileMemory, cTile);
+
+    m_apTile  .push_back (pTile);
+    m_TileList.BindObject(pTile);
 
     return pTile;
 }
@@ -135,15 +166,18 @@ RETURN_RESTRICT cTile* cField::__CreateTile()
 // ****************************************************************
 RETURN_RESTRICT cEnemy* cField::__CreateEnemy()
 {
-    cEnemy* pEnemy = POOLED_NEW(m_aEnemyMemory, cEnemy);
-    m_Enemy.push_back(pEnemy);
-
-    coreObject3D* pShadow = POOLED_NEW(m_aShadowMemory, coreObject3D);
-    m_Shadow.push_back(pShadow);
+    cEnemy*       pEnemy  = POOLED_NEW(m_EnemyMemory,  cEnemy);
+    coreObject3D* pShadow = POOLED_NEW(m_ShadowMemory, coreObject3D);
 
     pShadow->DefineModel  ("default_sphere.md3");
     pShadow->DefineProgram("shadow_object_program");
-    pShadow->SetSize      (coreVector3(0.99f,0.99f,3.0f) * 0.95f * ENEMY_SCALE);
+    pShadow->SetSize      (coreVector3(1.0f,1.0f,1.0f) * 0.95f * ENEMY_SCALE);
+
+    m_apEnemy  .push_back (pEnemy);
+    m_EnemyList.BindObject(pEnemy);
+
+    m_apShadow  .push_back (pShadow);
+    m_ShadowList.BindObject(pShadow);
 
     return pEnemy;
 }
@@ -152,8 +186,10 @@ RETURN_RESTRICT cEnemy* cField::__CreateEnemy()
 // ****************************************************************
 RETURN_RESTRICT cDoor* cField::__CreateDoor()
 {
-    cDoor* pDoor = POOLED_NEW(m_aDoorMemory, cDoor);
-    m_Door.push_back(pDoor);
+    cDoor* pDoor = POOLED_NEW(m_DoorMemory, cDoor);
+
+    m_apDoor  .push_back (pDoor);
+    m_DoorList.BindObject(pDoor);
 
     return pDoor;
 }
@@ -164,22 +200,28 @@ void cField::__CreateTileExt(const coreInt32 iX, const coreInt32 iY, const coreU
 {
     cTile* pTile = this->__CreateTile();
 
-    pTile->SetPosition  (coreVector3(I_TO_F(iX) * TILE_SCALE, I_TO_F(iY) * TILE_SCALE, 0.0f));
+    pTile->SetPosition  (coreVector3(I_TO_F(iX), I_TO_F(iY), 0.0f) * TILE_SCALE);
     pTile->SetValue     (iValue);
     pTile->SetCheckpoint(iCheckpoint);
 
     m_iLastX = iX;
     m_iLastY = iY;
+
+    if(iCheckpoint)
+    {
+        m_iFinalCheckpoint      = iCheckpoint;
+        m_iFinalCheckpointIndex = m_apTile.size() - 1u;
+    }
 }
 
 
 // ****************************************************************
-void cField::__CreateEnemyExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed, const coreVector2 vPosOffset)
+void cField::__CreateEnemExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed, const coreVector2 vPosOffset)
 {
     cEnemy* pEnemy = this->__CreateEnemy();
 
-    pEnemy->SetPosition(coreVector3(I_TO_F(iX) * TILE_SCALE + vPosOffset.x, I_TO_F(iY) * TILE_SCALE + vPosOffset.y, 0.0f));
-    pEnemy->Configure  (iType, fTimeOffset, fMoveOffset, fSpeed);
+    pEnemy->SetPosition(coreVector3(I_TO_F(iX) + vPosOffset.x, I_TO_F(iY) + vPosOffset.y, 0.0f) * TILE_SCALE);
+    pEnemy->Configure  (iType, fTimeOffset, fMoveOffset * TILE_SCALE, fSpeed);
 
     m_iLastX = iX;
     m_iLastY = iY;
@@ -189,12 +231,12 @@ void cField::__CreateEnemyExt(const coreInt32 iX, const coreInt32 iY, const core
 // ****************************************************************
 void cField::__CreateDoorExt(const coreInt32 iX, const coreInt32 iY)
 {
-    if(m_iDoorMarker < m_Tile.size())
+    if(m_iDoorMarker < m_apTile.size())   // do not create door on respawn position
     {
         cDoor* pDoor = this->__CreateDoor();
 
-        pDoor->SetPosition(coreVector3(I_TO_F(iX) * TILE_SCALE, I_TO_F(iY) * TILE_SCALE, 0.0f));
-        pDoor->SetCheck   (m_iDoorMarker, m_Tile.size());
+        pDoor->SetPosition(coreVector3(I_TO_F(iX), I_TO_F(iY), 0.0f) * TILE_SCALE);
+        pDoor->SetCheck   (m_iDoorMarker, m_apTile.size());
     }
 
     m_iDoorMarker = 0u;
@@ -207,14 +249,15 @@ void cField::__CreateDoorExt(const coreInt32 iX, const coreInt32 iY)
 // ****************************************************************
 void cField::__DoorMarker()
 {
-    m_iDoorMarker = m_Tile.size();
+    m_iDoorMarker = m_apTile.size();
 }
 
 
 // ****************************************************************
-void cField::__RetrieveLast(coreInt32* OUTPUT pX, coreInt32* OUTPUT pY)
+void cField::__RetrieveLast(coreInt32* OUTPUT pX, coreInt32* OUTPUT pY)const
 {
     ASSERT(pX && pY)
+
     (*pX) = m_iLastX;
     (*pY) = m_iLastY;
 }
