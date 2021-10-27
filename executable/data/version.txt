@@ -1,2 +1,32 @@
 -------------------------------------------------------------------
+Last Fall v1.1.0 (2021-10-25)
+
+Added
+- restricted gamepad stick controls to the eight base directions
+
+Changed
+- rearranged enemies on second puzzle
+- increased enemy density on third puzzle, road to third puzzle, and road to fifth puzzle
+- changed plate values on road to second puzzle
+- enabled geometry instancing
+- enabled various WebGL 2 features and extensions
+
+Fixed
+- fixed already ending the game when falling from the second last plate
+- fixed wrong transparency when player is behind other objects
+- fixed shadow flickering when respawning
+
+
+-------------------------------------------------------------------
+Last Fall v1.0.1 (2021-10-04)
+
+Changed
+- reduced enemy collision radius
+- changed plate values on road to first puzzle
+
+Fixed
+- fixed player shadow being at the wrong place when landing
+
+
+-------------------------------------------------------------------
 Last Fall v1.0.0 (2021-10-03)

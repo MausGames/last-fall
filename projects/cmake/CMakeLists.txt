@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.19)
 set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 
 
-project(LastFall VERSION 1.0.0)
+project(LastFall VERSION 1.1.0)
 add_subdirectory(${BASE_DIRECTORY}/../CoreEngine/projects/cmake CoreEngine)
 add_executable(LastFall)
 
