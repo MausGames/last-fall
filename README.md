@@ -23,8 +23,8 @@ Try not to fall… until the end.
 
 <table>
     <tr>
-        <td><a href="material/screenshots/laf_screen_001.jpg?raw=true"><img src="material/screenshots/laf_screen_001t.jpg" /></a></td>
-        <td><a href="material/screenshots/laf_screen_002.jpg?raw=true"><img src="material/screenshots/laf_screen_002t.jpg" /></a></td>
-        <td><a href="material/screenshots/laf_screen_003.jpg?raw=true"><img src="material/screenshots/laf_screen_003t.jpg" /></a></td>
+        <td><a href="material/screenshots/laf_screen_001.jpg?raw=true"><img src="material/screenshots/laf_screen_001t.jpg"></a></td>
+        <td><a href="material/screenshots/laf_screen_002.jpg?raw=true"><img src="material/screenshots/laf_screen_002t.jpg"></a></td>
+        <td><a href="material/screenshots/laf_screen_003.jpg?raw=true"><img src="material/screenshots/laf_screen_003t.jpg"></a></td>
     </tr>
 </table>

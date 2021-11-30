@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Last Fall
+
+Copyright (c) 2021 Martin Mauersics (https://www.maus-games.at)
+Released under zlib and CC BY, unless otherwise specified
+
+
+-------------------------------------------------------------------
 People
 
 - Martin Mauersics : Game Designer, Programmer
