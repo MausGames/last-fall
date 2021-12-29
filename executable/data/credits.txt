@@ -15,8 +15,8 @@ People
 Resources
 
 Fonts
-- Google : Noto Sans (OFL)
-- Jayvee Enaguas : Sadana Square (OFL)
+- Google : Noto Sans : fonts/default.ttf  (OFL)
+- Jayvee Enaguas : Sadana Square : fonts/sadanasquare.ttf (OFL)
 
 
 -------------------------------------------------------------------
@@ -716,7 +716,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -------------------------------------------------------------------
 zstd (BSD-3)
 
-Copyright (c) 2016, Facebook, Inc.
+Copyright (c) 2016, Yann Collet, Facebook, Inc.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

@@ -16,7 +16,7 @@ safe qualifiers (ignored, if not supported):
 - highp, mediump, lowp
 - flat, noperspective, smooth
 - centroid, sample
-- precise
+- precise (+ fma)
 - invariant
 
 
@@ -51,6 +51,8 @@ Functions
 
     // transform lighting properties into tangent-space
     void coreLightingTransform(in vec3 v3Position)
+    void coreLightingTransformRaw()
+    void coreLightingTransformLow()
 
 Input
 
