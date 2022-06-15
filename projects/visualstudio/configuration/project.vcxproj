@@ -59,27 +59,27 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>true</UseDebugLibraries>
     <UseNativeEnvironment>true</UseNativeEnvironment>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <CharacterSet>MultiByte</CharacterSet>
+    <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -139,7 +139,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <SupportJustMyCode>false</SupportJustMyCode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
@@ -147,6 +147,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ForceSymbolReferences>_wWinMain@16</ForceSymbolReferences>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>CoreEngine_debug.lib SDL2.lib SDL2_ttf.lib SDL2_image.lib OpenGL32.lib OpenAL32.lib LibOGG.lib LibVorbis.lib LibVorbisFile.lib LibZstd.lib version.lib psapi.lib %(AdditionalOptions)</AdditionalOptions>
@@ -169,7 +170,7 @@
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
       <SupportJustMyCode>false</SupportJustMyCode>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>main.h</PrecompiledHeaderFile>
@@ -177,6 +178,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ForceSymbolReferences>wWinMain</ForceSymbolReferences>
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <AdditionalOptions>CoreEngine_debug.lib SDL2.lib SDL2_ttf.lib SDL2_image.lib OpenGL32.lib OpenAL32.lib LibOGG.lib LibVorbis.lib LibVorbisFile.lib LibZstd.lib version.lib %(AdditionalOptions)</AdditionalOptions>
@@ -200,10 +202,9 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <AdditionalOptions>/utf-8 /Gw /GA /fp:contract /Qfast_transcendentals /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /Gw /GA /Ob3 /fp:contract /Qfast_transcendentals /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MinSpace</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
@@ -215,6 +216,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ForceSymbolReferences>_wWinMain@16</ForceSymbolReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <AdditionalOptions>CoreEngine.lib SDL2.lib SDL2_ttf.lib SDL2_image.lib OpenGL32.lib OpenAL32.lib LibOGG.lib LibVorbis.lib LibVorbisFile.lib LibZstd.lib version.lib psapi.lib %(AdditionalOptions)</AdditionalOptions>
@@ -243,10 +245,9 @@
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdc11</LanguageStandard_C>
-      <AdditionalOptions>/utf-8 /Gw /GA /fp:contract /Qfast_transcendentals /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /Gw /GA /Ob3 /fp:contract /Qfast_transcendentals /Qvec-report:1 %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MinSpace</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <StringPooling>true</StringPooling>
       <ExceptionHandling>false</ExceptionHandling>
@@ -258,6 +259,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
+      <ForceSymbolReferences>wWinMain</ForceSymbolReferences>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
       <AdditionalOptions>CoreEngine.lib SDL2.lib SDL2_ttf.lib SDL2_image.lib OpenGL32.lib OpenAL32.lib LibOGG.lib LibVorbis.lib LibVorbisFile.lib LibZstd.lib version.lib %(AdditionalOptions)</AdditionalOptions>

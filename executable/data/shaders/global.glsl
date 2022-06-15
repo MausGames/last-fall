@@ -12,6 +12,7 @@
 // #version                         (#)   // shader version
 // #define _CORE_*_SHADER_          (1)   // shader type (vertex, fragment, ...)
 // #define _CORE_OPTION_*_          (1)   // multiple preprocessor options
+// #define _CORE_TARGET_*_          (1)   // multiple target adjustments
 // #define _CORE_QUALITY_           (#)   // quality level
 // #define CORE_NUM_TEXTURES_2D     (#)   // number of 2d texture units
 // #define CORE_NUM_TEXTURES_SHADOW (#)   // number of shadow texture units
@@ -20,25 +21,31 @@
 
 // compiler configuration
 #if defined(GL_ES)
-    #extension GL_EXT_conservative_depth       : enable
-    #extension GL_EXT_shadow_samplers          : enable
-    #extension GL_OES_sample_variables         : enable
+    #extension GL_EXT_conservative_depth          : enable
+    #extension GL_EXT_shadow_samplers             : enable
+    #extension GL_OES_sample_variables            : enable
+    #extension GL_OES_standard_derivatives        : enable
 #else
-    #extension GL_AMD_conservative_depth       : enable
-    #extension GL_AMD_gpu_shader_half_float    : enable
-    #extension GL_AMD_shader_trinary_minmax    : enable
-    #extension GL_ARB_conservative_depth       : enable
-    #extension GL_ARB_enhanced_layouts         : enable
-    #extension GL_ARB_gpu_shader5              : enable
-    #extension GL_ARB_sample_shading           : enable
-    #extension GL_ARB_shader_group_vote        : enable
-    #extension GL_ARB_shader_image_load_store  : enable
-    #extension GL_ARB_shading_language_packing : enable
-    #extension GL_ARB_uniform_buffer_object    : enable
-    #extension GL_EXT_gpu_shader4              : enable
-    #extension GL_EXT_shader_image_load_store  : enable
-    #extension GL_NV_gpu_shader5               : enable
+    #extension GL_AMD_conservative_depth          : enable
+    #extension GL_AMD_gpu_shader_half_float       : enable
+    #extension GL_AMD_shader_trinary_minmax       : enable
+    #extension GL_ARB_conservative_depth          : enable
+    #extension GL_ARB_enhanced_layouts            : enable
+    #extension GL_ARB_gpu_shader5                 : enable
+    #extension GL_ARB_sample_shading              : enable
+    #extension GL_ARB_shader_group_vote           : enable
+    #extension GL_ARB_shader_image_load_store     : enable
+    #extension GL_ARB_shading_language_packing    : enable
+    #extension GL_ARB_uniform_buffer_object       : enable
+    #extension GL_EXT_demote_to_helper_invocation : enable
+    #extension GL_EXT_gpu_shader4                 : enable
+    #extension GL_EXT_shader_image_load_store     : enable
+    #extension GL_NV_gpu_shader5                  : enable
 #endif
+#pragma optimize(on)
+#pragma debug(off)
+
+// feature helper
 #if defined(GL_ES)
     #define CORE_GL_VERSION    (0)
     #define CORE_GL_ES_VERSION (__VERSION__)
@@ -58,8 +65,9 @@
 #if defined(GL_ARB_shader_image_load_store) || defined(GL_EXT_shader_image_load_store) || (CORE_GL_VERSION >= 420) || (CORE_GL_ES_VERSION >= 310)
     #define CORE_GL_shader_image_load_store
 #endif
-#pragma optimize(on)
-#pragma debug(off)
+#if defined(GL_OES_standard_derivatives) || (CORE_GL_VERSION >= 110) || (CORE_GL_ES_VERSION >= 300)
+    #define CORE_GL_standard_derivatives
+#endif
 
 // precision qualifiers
 #if defined(GL_ES)
@@ -96,7 +104,8 @@
         #define shadow2DProj(t,v) (shadow2DProjEXT(t, v))
     #else
         #define sampler2DShadow   sampler2D
-        #define shadow2DProj(t,v) ((texture2DProj(t, v).r < (v.z / v.w)) ? 1.0 : 0.0)
+        #define shadow2DProj(t,v) (coreShadow2DProj(t, v))
+        vec4 coreShadow2DProj(const in sampler2DShadow t, const in vec4 v) {return (texture2DProj(t, v).r < (v.z / v.w)) ? vec4(1.0) : vec4(0.0);}
     #endif
 #endif
 #if (CORE_GL_VERSION >= 130) || (CORE_GL_ES_VERSION >= 300)
@@ -123,6 +132,14 @@
 #endif
 #if !defined(GL_ES) && (CORE_GL_VERSION < 120)
     #define invariant
+#endif
+#if !defined(CORE_GL_standard_derivatives)
+    #define dFdx(x)   ((x) * 0.0)
+    #define dFdy(x)   ((x) * 0.0)
+    #define fwidth(x) ((x) * 0.0)
+#endif
+#if defined(GL_EXT_demote_to_helper_invocation)
+    #define discard demote
 #endif
 
 // type definitions
@@ -155,7 +172,7 @@
 
 // evaluate shader per sample
 #if defined(CORE_GL_sample_shading)
-    #define CORE_SAMPLE_SHADING {gl_SampleID;}
+    #define CORE_SAMPLE_SHADING {int A = gl_SampleID;}
 #else
     #define CORE_SAMPLE_SHADING
 #endif
@@ -507,8 +524,8 @@ uniform lowp    vec4 u_v4Color;
 uniform mediump vec4 u_v4TexParam;
 
 // texture uniforms
-uniform lowp sampler2D       u_as2Texture2D    [CORE_NUM_TEXTURES_2D];
-uniform lowp sampler2DShadow u_as2TextureShadow[CORE_NUM_TEXTURES_SHADOW];
+uniform lowp    sampler2D       u_as2Texture2D    [CORE_NUM_TEXTURES_2D];
+uniform mediump sampler2DShadow u_as2TextureShadow[CORE_NUM_TEXTURES_SHADOW];
 
 
 // ****************************************************************
@@ -593,6 +610,15 @@ uniform lowp sampler2DShadow u_as2TextureShadow[CORE_NUM_TEXTURES_SHADOW];
     void VertexMain();
     void ShaderMain()
     {
+    #if defined(_CORE_TARGET_MACOS_)
+        v_v4VarColor   = vec4(0.0);
+        for(int i = 0; i < CORE_NUM_TEXTURES_2D; ++i) v_av2TexCoord[i] = vec2(0.0);
+        for(int i = 0; i < CORE_NUM_LIGHTS;      ++i) v_av4LightPos[i] = vec4(0.0);
+        for(int i = 0; i < CORE_NUM_LIGHTS;      ++i) v_av4LightDir[i] = vec4(0.0);
+        v_v3TangentPos = vec3(0.0);
+        v_v3TangentCam = vec3(0.0);
+    #endif
+
     #if defined(_CORE_OPTION_INSTANCING_)
         v_v4VarColor = a_v4DivColor;
     #endif
@@ -824,13 +850,19 @@ uniform lowp sampler2DShadow u_as2TextureShadow[CORE_NUM_TEXTURES_SHADOW];
 
 // recommended texture lookup
 #if (CORE_GL_VERSION >= 130) || (CORE_GL_ES_VERSION >= 300)
-    #define coreTexture2D(u,c)     (texture      (u_as2Texture2D    [u], c))
-    #define coreTextureProj(u,c)   (textureProj  (u_as2Texture2D    [u], c))
-    #define coreTextureShadow(u,c) (textureProj  (u_as2TextureShadow[u], c))
+    #define coreTexture2D(u,c)         (texture       (u_as2Texture2D    [u], c))
+    #define coreTextureProj(u,c)       (textureProj   (u_as2Texture2D    [u], c))
+    #define coreTextureShadow(u,c)     (textureProj   (u_as2TextureShadow[u], c))
+    #define coreTextureBase2D(u,c)     (textureLod    (u_as2Texture2D    [u], c, 0.0))
+    #define coreTextureBaseProj(u,c)   (textureProjLod(u_as2Texture2D    [u], c, 0.0))
+    #define coreTextureBaseShadow(u,c) (textureProjLod(u_as2TextureShadow[u], c, 0.0))
 #else
-    #define coreTexture2D(u,c)     (texture2D    (u_as2Texture2D    [u], c))
-    #define coreTextureProj(u,c)   (texture2DProj(u_as2Texture2D    [u], c))
-    #define coreTextureShadow(u,c) (shadow2DProj (u_as2TextureShadow[u], c).r)
+    #define coreTexture2D(u,c)         (texture2D     (u_as2Texture2D    [u], c))
+    #define coreTextureProj(u,c)       (texture2DProj (u_as2Texture2D    [u], c))
+    #define coreTextureShadow(u,c)     (shadow2DProj  (u_as2TextureShadow[u], c).r)
+    #define coreTextureBase2D(u,c)     (coreTexture2D    (u, c))
+    #define coreTextureBaseProj(u,c)   (coreTextureProj  (u, c))
+    #define coreTextureBaseShadow(u,c) (coreTextureShadow(u, c))
 #endif
 
 
