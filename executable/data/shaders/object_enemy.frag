@@ -21,5 +21,5 @@ void FragmentMain()
 
     v1Intensity *= max(v_v1Length, 0.0);
 
-    gl_FragColor = vec4(vec3(v1Intensity), 1.0) * u_v4Color;
+    gl_FragColor = vec4(vec3(v1Intensity + coreDither() / 255.0), 1.0) * u_v4Color;
 }

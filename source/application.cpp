@@ -12,6 +12,7 @@
 const coreChar* const CoreApp::Settings::Name                   = "Last Fall";
 const coreChar* const CoreApp::Settings::IconPath               = DEFINED(_CORE_EMSCRIPTEN_) ? NULL : "data/textures/game_icon.png";
 const coreChar* const CoreApp::Settings::CursorPath             = DEFINED(_CORE_EMSCRIPTEN_) ? NULL : "data/textures/default_cursor.png";
+const coreBool        CoreApp::Settings::UserManagement         = false;
 const coreUint8       CoreApp::Settings::Graphics::DepthSize    = 16u;
 const coreUint8       CoreApp::Settings::Graphics::StencilSize  = 8u;
 const coreBool        CoreApp::Settings::Graphics::AlphaChannel = false;

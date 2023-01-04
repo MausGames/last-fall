@@ -115,7 +115,7 @@ void cGame::Move()
         {
             m_fOutro.Update(1.0f);
 
-            const coreFloat fAlpha = LERPH3(1.0f, 0.0f, MIN(m_fOutro * 0.2f, 1.0f));
+            const coreFloat fAlpha = LERPH3(1.0f, 0.0f, MIN1(m_fOutro * 0.2f));
 
             m_Player.SetSize (coreVector3(1.0f,1.0f,1.0f) * PLAYER_SCALE * fAlpha);
             m_Player.SetAlpha(fAlpha);

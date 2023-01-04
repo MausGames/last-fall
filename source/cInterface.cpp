@@ -70,8 +70,8 @@ void cInterface::Move()
         pObject->SetEnabled(fAlpha ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
     };
 
-    const coreFloat fAlpha = LERPH3(0.0f, 1.0f, m_fIntroValue);
-    const coreFloat fOutro = LERPH3(0.0f, 1.0f, CLAMP((g_pGame->GetOutro() - 4.0f) * 0.5f, 0.0f, 1.0f));
+    const coreFloat fAlpha = BLENDH3(m_fIntroValue);
+    const coreFloat fOutro = BLENDH3(CLAMP01((g_pGame->GetOutro() - 4.0f) * 0.5f));
 
     nSetAlphaFunc(&m_Title,    fAlpha);
     nSetAlphaFunc(&m_Name,     fAlpha);
