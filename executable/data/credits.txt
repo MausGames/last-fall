@@ -14,6 +14,13 @@ People
 -------------------------------------------------------------------
 Resources
 
+Music
+- Tim Beek : Drama Music Pack (licensed, https://timbeek.com)
+
+Sounds
+- Rich McBride : Future UI (licensed, https://shapeforms.com)
+- themfish : bamf : sounds/kick.opus (CC BY)
+
 Fonts
 - Google : Noto Sans : fonts/default.ttf  (OFL)
 - Jayvee Enaguas : Sadana Square : fonts/sadanasquare.ttf (OFL)

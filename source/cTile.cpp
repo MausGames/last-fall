@@ -76,11 +76,11 @@ void cTile::Move()
     {
     default: UNREACHABLE
     case 0u:
-    case 1u:              vColor = COLOR_RED;    vTexOffset = coreVector2(0.0f,0.0f); break;
-    case 2u:              vColor = COLOR_ORANGE; vTexOffset = coreVector2(1.0f,0.0f); break;
-    case 3u:              vColor = COLOR_YELLOW; vTexOffset = coreVector2(2.0f,0.0f); break;
-    case 4u:              vColor = COLOR_BLUE;   vTexOffset = coreVector2(0.0f,1.0f); break;
-    case TILE_CHECKPOINT: vColor = COLOR_WHITE;  vTexOffset = coreVector2(2.0f,2.0f); break;
+    case 1u:              vColor = coreVector3(1.000f,0.275f,0.275f); /*COLOR_RED;   */ vTexOffset = coreVector2(0.0f,0.0f); break;
+    case 2u:              vColor = coreVector3(1.000f,0.543f,0.227f); /*COLOR_ORANGE;*/ vTexOffset = coreVector2(1.0f,0.0f); break;
+    case 3u:              vColor = coreVector3(1.000f,0.824f,0.292f); /*COLOR_YELLOW;*/ vTexOffset = coreVector2(2.0f,0.0f); break;
+    case 4u:              vColor = coreVector3(0.102f,0.702f,1.000f); /*COLOR_BLUE;  */ vTexOffset = coreVector2(0.0f,1.0f); break;
+    case TILE_CHECKPOINT: vColor = coreVector3(1.000f,1.000f,1.000f); /*COLOR_WHITE; */ vTexOffset = coreVector2(2.0f,2.0f); break;
     }
 
     this->SetColor3   (LERP(vColor, COLOR_WHITE, m_bPressed ? 0.8f : 0.0f));

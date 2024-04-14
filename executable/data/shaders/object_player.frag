@@ -18,7 +18,7 @@ void FragmentMain()
 {
     float v1Intensity  = dot(normalize(v_v3Normal),   c_v3Camera) * 0.5 + 0.5;
           v1Intensity *= dot(normalize(v_v3Relative), c_v3Camera);
-          v1Intensity *= inversesqrt(coreLengthSq(v_v3Relative)) * 45.0;
+          v1Intensity *= inversesqrt(coreLengthSq(v_v3Relative)) * 35.0;
 
     v1Intensity *= v_v1Length;
 

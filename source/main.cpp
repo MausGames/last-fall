@@ -13,6 +13,8 @@ STATIC_MEMORY(cGame,          g_pGame)
 STATIC_MEMORY(cShadow,        g_pShadow)
 STATIC_MEMORY(coreFullscreen, s_pFullscreen)
 
+static coreMusicPlayer s_MusicPlayer = {};
+
 
 // ****************************************************************
 // init the application
@@ -28,6 +30,10 @@ void CoreApp::Init()
 
     s_pFullscreen->DefineProgram("fullscreen_program");
 
+    s_MusicPlayer.AddMusicFolder("data/music", "*.opus");
+    s_MusicPlayer.StartThread();
+    s_MusicPlayer.Play();
+
 #if !defined(_CORE_EMSCRIPTEN_)
     Core::Input->ShowCursor(false);
 #endif
@@ -38,6 +44,9 @@ void CoreApp::Init()
 // exit the application
 void CoreApp::Exit()
 {
+    s_MusicPlayer.KillThread();
+    s_MusicPlayer.ClearMusic();
+
     STATIC_DELETE(s_pFullscreen)
     STATIC_DELETE(g_pShadow)
     STATIC_DELETE(g_pGame)
@@ -82,4 +91,6 @@ void CoreApp::Move()
     g_pGame      ->Move();
     g_pInterface ->Move();
     s_pFullscreen->Move();
+
+    s_MusicPlayer.Update();
 }

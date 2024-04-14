@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Last Fall v1.2.0 (2024-01-28)
+
+Added
+- added music and sound effects
+- implemented smooth camera movement
+- implemented random tile distribution
+
+Changed
+- changed plate values of the last puzzle
+- improved visual quality a bit (colors, shading, zoom)
+
+
+-------------------------------------------------------------------
 Last Fall v1.1.0 (2021-10-25)
 
 Added

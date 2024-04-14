@@ -12,7 +12,7 @@
 
 
 // ****************************************************************
-#define INTERFACE_COLOR (coreVector3(1.0f,1.0f,1.0f) * 0.97f)
+#define INTERFACE_COLOR (coreVector3(1.0f,1.0f,1.0f) * 0.95f)
 
 
 // ****************************************************************
@@ -21,8 +21,9 @@ class cInterface final
 private:
     coreLabel m_Title;
     coreLabel m_Name;
-    coreLabel m_Controls;
     coreLabel m_Message;
+
+    coreObject2D m_aBack[3];
 
     coreBool m_bIntro;
     coreFlow m_fIntroValue;

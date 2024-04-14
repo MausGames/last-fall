@@ -15,8 +15,14 @@ cGame::cGame()noexcept
 , m_Field           ()
 , m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 2u : 0u)   // debug start
 , m_fOutro          (0.0f)
+, m_vSmoothCam      (coreVector2(0.0f,0.0f))
+, m_pKickSound      (NULL)
+, m_pUnlockSound    (NULL)
 {
     m_Player.SetPosition(coreVector3(0.0f,0.0f,0.0f));
+
+    m_pKickSound   = Core::Manager::Resource->Get<coreSound>("kick.opus");
+    m_pUnlockSound = Core::Manager::Resource->Get<coreSound>("unlock.opus");
 }
 
 
@@ -81,6 +87,8 @@ void cGame::Move()
 
                 pEnemy->Bump();
 
+                if(m_pKickSound.IsUsable()) m_pKickSound->PlayPosition(NULL, 1.0f, 1.0f, false, 0u, pEnemy->GetPosition());
+
                 bFalling = true;
                 break;
             }
@@ -124,10 +132,14 @@ void cGame::Move()
         {
             m_Field.Load(m_iLastCheckpoint);
 
+            const coreVector2 vShift = m_vSmoothCam - m_Player.GetPosition().xy();
+
             const cTile* pFirst = m_Field.GetTileList()->front();
 
             m_Player.SetFullPosition(coreVector3(pFirst->GetPosition().xy(), m_Player.GetPosition().z + GAME_HEIGHT * 2.0f));
             m_Player.SetLanding     (true);
+
+            m_vSmoothCam = vShift + m_Player.GetPosition().xy();
         }
     }
 
@@ -138,11 +150,15 @@ void cGame::Move()
 
     g_pShadow->SetAlpha(fAlpha);
 
+    m_vSmoothCam = LERP(m_vSmoothCam, m_Player.GetPosition().xy(), MIN1(TIME * 6.0f));
+
     const coreVector3 vCamDir = CAMERA_DIRECTION;
     const coreVector3 vCamOri = CAMERA_ORIENTATION;
-    const coreVector3 vCamPos = m_Player.GetPosition() - vCamDir * 50.0f;
+    const coreVector3 vCamPos = coreVector3(m_vSmoothCam, m_Player.GetPosition().z) - vCamDir * 40.0f;
 
     Core::Graphics->SetCamera(vCamPos, vCamDir, vCamOri);
+
+    Core::Audio->SetListener(vCamPos, coreVector3(0.0f,0.0f,0.0f), vCamDir, vCamOri);
 }
 
 
@@ -153,4 +169,11 @@ void cGame::RenderShadow()
 
     m_Player.RenderShadow();
     m_Field .RenderShadow();
+}
+
+
+// ****************************************************************
+void cGame::PlayUnlockSound(const coreVector3 vPosition)
+{
+    if(m_pUnlockSound.IsUsable()) m_pUnlockSound->PlayPosition(NULL, 0.6f, 0.8f, false, 0u, vPosition);
 }

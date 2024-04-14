@@ -33,7 +33,11 @@ void cDoor::Move()
     if(!m_bDisable)
     {
         const coreUint32 iTotal = g_pGame->GetField()->CalculateTileValue(m_iCheckFrom, m_iCheckTo);
-        if(iTotal <= 1u) m_bDisable = true;
+        if(iTotal <= 1u)
+        {
+            m_bDisable = true;
+            g_pGame->PlayUnlockSound(this->GetPosition());
+        }
     }
 
     if(m_bDisable)

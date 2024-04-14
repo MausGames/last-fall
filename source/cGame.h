@@ -26,6 +26,11 @@ private:
     coreUint8 m_iLastCheckpoint;
     coreFlow  m_fOutro;
 
+    coreVector2 m_vSmoothCam;
+
+    coreSoundPtr m_pKickSound;
+    coreSoundPtr m_pUnlockSound;
+
 
 public:
     cGame()noexcept;
@@ -36,6 +41,8 @@ public:
     void Move();
 
     void RenderShadow();
+
+    void PlayUnlockSound(const coreVector3 vPosition);
 
     inline void SetLastCheckpoint(const coreUint8 iLastCheckpoint) {if(m_iLastCheckpoint < iLastCheckpoint) m_iLastCheckpoint = iLastCheckpoint;}
 

@@ -224,22 +224,22 @@ void cField::__Setup(const coreUint8 iCheckpoint)
     this->__CreateDoorExt(X-3, Y+3);
     this->__RetrieveLast (&X,  &Y);
 
-    this->__CreateEnemExt(X,   Y+3, 3u, 0.0f*PI,  1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+3, 3u, 0.0f*PI, -1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+4, 3u, 0.5f*PI,  1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+4, 3u, 0.5f*PI, -1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+5, 3u, 0.0f*PI,  1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+5, 3u, 0.0f*PI, -1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+6, 3u, 0.5f*PI,  1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+6, 3u, 0.5f*PI, -1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+7, 3u, 0.0f*PI,  1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+7, 3u, 0.0f*PI, -1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+8, 3u, 0.5f*PI,  1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+8, 3u, 0.5f*PI, -1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+9, 3u, 0.0f*PI,  1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+9, 3u, 0.0f*PI, -1.0f,  0.4f*PI);
-    this->__CreateEnemExt(X,   Y+10,3u, 0.5f*PI,  1.0f, -0.4f*PI);
-    this->__CreateEnemExt(X,   Y+10,3u, 0.5f*PI, -1.0f, -0.4f*PI);
+    this->__CreateEnemExt(X,   Y+3, 3u, 0.0f*PI,  1.0f,  0.4f*PI * 1.00f);
+    this->__CreateEnemExt(X,   Y+3, 3u, 0.0f*PI, -1.0f,  0.4f*PI * 1.02f);
+    this->__CreateEnemExt(X,   Y+4, 3u, 0.5f*PI,  1.0f, -0.4f*PI * 1.04f);
+    this->__CreateEnemExt(X,   Y+4, 3u, 0.5f*PI, -1.0f, -0.4f*PI * 1.06f);
+    this->__CreateEnemExt(X,   Y+5, 3u, 0.0f*PI,  1.0f,  0.4f*PI * 1.08f);
+    this->__CreateEnemExt(X,   Y+5, 3u, 0.0f*PI, -1.0f,  0.4f*PI * 1.10f);
+    this->__CreateEnemExt(X,   Y+6, 3u, 0.5f*PI,  1.0f, -0.4f*PI * 1.12f);
+    this->__CreateEnemExt(X,   Y+6, 3u, 0.5f*PI, -1.0f, -0.4f*PI * 1.14f);
+    this->__CreateEnemExt(X,   Y+7, 3u, 0.0f*PI,  1.0f,  0.4f*PI * 1.16f);
+    this->__CreateEnemExt(X,   Y+7, 3u, 0.0f*PI, -1.0f,  0.4f*PI * 1.18f);
+    this->__CreateEnemExt(X,   Y+8, 3u, 0.5f*PI,  1.0f, -0.4f*PI * 1.20f);
+    this->__CreateEnemExt(X,   Y+8, 3u, 0.5f*PI, -1.0f, -0.4f*PI * 1.22f);
+    this->__CreateEnemExt(X,   Y+9, 3u, 0.0f*PI,  1.0f,  0.4f*PI * 1.24f);
+    this->__CreateEnemExt(X,   Y+9, 3u, 0.0f*PI, -1.0f,  0.4f*PI * 1.26f);
+    this->__CreateEnemExt(X,   Y+10,3u, 0.5f*PI,  1.0f, -0.4f*PI * 1.28f);
+    this->__CreateEnemExt(X,   Y+10,3u, 0.5f*PI, -1.0f, -0.4f*PI * 1.30f);
     this->__CreateTileExt(X,   ++Y, 4u);
     this->__CreateTileExt(X,   ++Y, 4u);
     this->__CreateTileExt(X,   ++Y, 4u);
@@ -341,6 +341,64 @@ void cField::__Setup(const coreUint8 iCheckpoint)
     this->__CreateTileExt(++X, Y,   4u);
     this->__CreateTileExt(++X, Y,   4u);
 
+    struct sPoint final
+    {
+        coreInt32 X;
+        coreInt32 Y;
+    };
+
+    coreList<sPoint> aPointList;
+    aPointList.reserve(m_apTile.size());
+
+    FOR_EACH(it, m_apTile)
+    {
+        sPoint oNewPoint;
+
+        oNewPoint.X = F_TO_SI(ROUND((*it)->GetPosition().x / TILE_SCALE));
+        oNewPoint.Y = F_TO_SI(ROUND((*it)->GetPosition().y / TILE_SCALE));
+
+        aPointList.push_back(oNewPoint);
+    }
+
+    FOR_EACH(it, aPointList)
+    {
+        for(coreUintW i = 0u; i < 3u; ++i)
+        {
+            const coreInt32 iPosX = it->X + Core::Rand->Int(2, 6) * (Core::Rand->Bool() ? -1 : 1);
+            const coreInt32 iPosY = it->Y + Core::Rand->Int(2, 6) * (Core::Rand->Bool() ? -1 : 1);
+
+            coreBool bValid = true;
+            FOR_EACH(et, aPointList)
+            {
+                if((iPosX >= et->X - 1) && (iPosX <= et->X + 1) &&
+                   (iPosY >= et->Y - 1) && (iPosY <= et->Y + 1))
+                {
+                    bValid = false;
+                    break;
+                }
+            }
+            FOR_EACH(et, m_apTile)
+            {
+                const coreInt32 iX = F_TO_SI(ROUND((*et)->GetPosition().x / TILE_SCALE));
+                const coreInt32 iY = F_TO_SI(ROUND((*et)->GetPosition().y / TILE_SCALE));
+
+                if((iPosX == iX) &&
+                   (iPosY == iY))
+                {
+                    bValid = false;
+                    break;
+                }
+            }
+
+            if(bValid)
+            {
+                const coreUint8 iValue = Core::Rand->Uint(1u, 3u);
+
+                this->__CreateTileExt(iPosX, iPosY, iValue);
+            }
+        }
+    }
+
     this->__CreateTileExt(++X, Y,   3u);
     this->__CreateTileExt(++X, Y,   3u);
     this->__CreateTileExt(++X, Y,   3u);
@@ -358,20 +416,20 @@ void cField::__Setup(const coreUint8 iCheckpoint)
     nCheckpointFunc      (++X, Y);
     this->__DoorMarker   ();
     this->__CreateEnemExt(X+4, Y+3, 4u, 0.0f, 0.0f, 1.0f);
-    this->__CreateTileExt(X+1, Y,   4u);
-    this->__CreateTileExt(X+2, Y,   4u);
-    this->__CreateTileExt(X+3, Y,   4u);
-    this->__CreateTileExt(X+4, Y,   4u);
-    this->__CreateTileExt(X+1, Y+1, 4u);
+    this->__CreateTileExt(X+1, Y,   2u);
+    this->__CreateTileExt(X+2, Y,   2u);
+    this->__CreateTileExt(X+3, Y,   2u);
+    this->__CreateTileExt(X+4, Y,   2u);
+    this->__CreateTileExt(X+1, Y+1, 2u);
     this->__CreateTileExt(X+2, Y+1, 4u);
     this->__CreateTileExt(X+3, Y+1, 4u);
-    this->__CreateTileExt(X+4, Y+1, 4u);
-    this->__CreateTileExt(X+1, Y+2, 4u);
+    this->__CreateTileExt(X+4, Y+1, 2u);
+    this->__CreateTileExt(X+1, Y+2, 2u);
     this->__CreateTileExt(X+2, Y+2, 4u);
     this->__CreateTileExt(X+3, Y+2, 4u);
-    this->__CreateTileExt(X+4, Y+2, 4u);
-    this->__CreateTileExt(X+1, Y+3, 4u);
-    this->__CreateTileExt(X+2, Y+3, 4u);
-    this->__CreateTileExt(X+3, Y+3, 4u);
-    this->__CreateTileExt(X+4, Y+3, 4u);
+    this->__CreateTileExt(X+4, Y+2, 2u);
+    this->__CreateTileExt(X+1, Y+3, 2u);
+    this->__CreateTileExt(X+2, Y+3, 2u);
+    this->__CreateTileExt(X+3, Y+3, 2u);
+    this->__CreateTileExt(X+4, Y+3, 2u);
 }

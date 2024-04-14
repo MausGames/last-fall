@@ -3,8 +3,8 @@
 IDI_ICON ICON DISCARDABLE "icon.ico"
 
 VS_VERSION_INFO VERSIONINFO
-    PRODUCTVERSION  1,1,0,0
-    FILEVERSION     1,1,0,0
+    PRODUCTVERSION  1,2,0,0
+    FILEVERSION     1,2,0,0
     FILEFLAGSMASK   0x3F
     FILEFLAGS       0x00
     FILEOS          VOS_NT_WINDOWS32
@@ -19,9 +19,9 @@ BEGIN
             VALUE "LegalCopyright",  "Martin Mauersics"
             VALUE "CompanyName",     "Maus Games (www.maus-games.at)"
             VALUE "ProductName",     "Last Fall"
-            VALUE "ProductVersion",  "1.1.0.0"
+            VALUE "ProductVersion",  "1.2.0.0"
             VALUE "FileDescription", "Last Fall"
-            VALUE "FileVersion",     "1.1.0.0"
+            VALUE "FileVersion",     "1.2.0.0"
         END
     END
     BLOCK "VarFileInfo"
