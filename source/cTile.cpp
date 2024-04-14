@@ -21,7 +21,7 @@ cTile::cTile()noexcept
 , m_fDisableTime  (0.0f)
 {
     this->DefineModel  ("object_cube.md3");
-    this->DefineTexture(0u, "text.png");
+    this->DefineTexture(0u, "text.webp");
     this->DefineProgram("object_tile_program");
 
     this->SetSize       (coreVector3(0.45f * TILE_SCALE, 0.45f * TILE_SCALE, 0.375f));
@@ -74,7 +74,7 @@ void cTile::Move()
     coreVector2 vTexOffset;
     switch(m_iValue)
     {
-    default: ASSERT(false)
+    default: UNREACHABLE
     case 0u:
     case 1u:              vColor = COLOR_RED;    vTexOffset = coreVector2(0.0f,0.0f); break;
     case 2u:              vColor = COLOR_ORANGE; vTexOffset = coreVector2(1.0f,0.0f); break;

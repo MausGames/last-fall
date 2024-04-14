@@ -6,6 +6,7 @@
 //| Released under the zlib License               |//
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
+#include "engine/data_transform_3d.glsl"
 
 
 varying vec2 v_v2Center;

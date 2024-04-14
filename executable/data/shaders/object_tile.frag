@@ -6,6 +6,7 @@
 //| Released under the zlib License               |//
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
+#include "shared.glsl"
 
 
 varying vec2 v_v2Center;

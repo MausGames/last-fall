@@ -9,16 +9,22 @@
 
 // ****************************************************************
 // project settings
-const coreChar* const CoreApp::Settings::Name                   = "Last Fall";
-const coreChar* const CoreApp::Settings::IconPath               = DEFINED(_CORE_EMSCRIPTEN_) ? NULL : "data/textures/game_icon.png";
-const coreChar* const CoreApp::Settings::CursorPath             = DEFINED(_CORE_EMSCRIPTEN_) ? NULL : "data/textures/default_cursor.png";
-const coreBool        CoreApp::Settings::UserManagement         = false;
-const coreUint8       CoreApp::Settings::Graphics::DepthSize    = 16u;
-const coreUint8       CoreApp::Settings::Graphics::StencilSize  = 8u;
-const coreBool        CoreApp::Settings::Graphics::AlphaChannel = false;
-const coreBool        CoreApp::Settings::Graphics::DoubleBuffer = true;
-const coreBool        CoreApp::Settings::Graphics::StereoRender = false;
-const coreUint32      CoreApp::Settings::Platform::SteamAppID   = 0u;
+const coreChar* const CoreApp::Settings::Name                          = "Last Fall";
+const coreChar* const CoreApp::Settings::Version                       = "1.1.0";
+const coreChar* const CoreApp::Settings::IconPath                      = "data/textures/game_icon.webp";
+const coreChar* const CoreApp::Settings::CursorPath                    = "data/textures/default_cursor.webp";
+const coreBool        CoreApp::Settings::UserManagement                = false;
+const coreUint8       CoreApp::Settings::Graphics::DepthSize           = 16u;
+const coreUint8       CoreApp::Settings::Graphics::StencilSize         = 8u;
+const coreBool        CoreApp::Settings::Graphics::AlphaChannel        = false;
+const coreBool        CoreApp::Settings::Graphics::DoubleBuffer        = true;
+const coreBool        CoreApp::Settings::Graphics::StereoRender        = false;
+const coreUint32      CoreApp::Settings::Platform::SteamAppID          = 0u;
+const coreChar* const CoreApp::Settings::Platform::EpicProductID       = NULL;
+const coreChar* const CoreApp::Settings::Platform::EpicSandboxID   [3] = {NULL, NULL, NULL};
+const coreChar* const CoreApp::Settings::Platform::EpicDeploymentID[3] = {NULL, NULL, NULL};
+const coreChar* const CoreApp::Settings::Platform::EpicClientID        = NULL;
+const coreChar* const CoreApp::Settings::Platform::EpicClientSecret    = NULL;
 
 
 // ****************************************************************
@@ -30,7 +36,7 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreModel>  ("object_enemy.md3",        CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_enemy.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
     Core::Manager::Resource->Load<coreModel>  ("object_player.md3",       CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_player.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
 
-    Core::Manager::Resource->Load<coreTexture>("text.png",                CORE_RESOURCE_UPDATE_AUTO,   "data/textures/text.png");
+    Core::Manager::Resource->Load<coreTexture>("text.webp",               CORE_RESOURCE_UPDATE_AUTO,   "data/textures/text.webp");
 
     Core::Manager::Resource->Load<coreShader> ("fullscreen.vert",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.vert", CORE_SHADER_OPTION_NO_ROTATION);
     Core::Manager::Resource->Load<coreShader> ("fullscreen.frag",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.frag");

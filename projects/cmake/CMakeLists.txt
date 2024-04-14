@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.22)
-set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+cmake_minimum_required(VERSION 3.25)
 
+set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+set(ENGINE_DIRECTORY ${BASE_DIRECTORY}/../CoreEngine)
 
 project(LastFall VERSION 1.1.0)
-add_subdirectory(${BASE_DIRECTORY}/../CoreEngine/projects/cmake CoreEngine)
+add_subdirectory(${ENGINE_DIRECTORY}/projects/cmake CoreEngine)
 add_executable(LastFall)
-
 
 set_target_properties(
     LastFall PROPERTIES
@@ -15,7 +15,6 @@ set_target_properties(
     BUILD_WITH_INSTALL_RPATH TRUE
     INSTALL_RPATH $ORIGIN
 )
-
 
 target_sources(
     LastFall PRIVATE
@@ -32,27 +31,22 @@ target_sources(
     ${BASE_DIRECTORY}/source/main.cpp
 )
 
-
 target_include_directories(
     LastFall PRIVATE
     ${BASE_DIRECTORY}/source
 )
-
 
 target_precompile_headers(
    LastFall PRIVATE
    $<$<COMPILE_LANGUAGE:CXX>: ${BASE_DIRECTORY}/source/main.h>
 )
 
-
 target_link_libraries(
     LastFall PRIVATE
     CoreEngine
 )
 
-
-if(EMSCRIPTEN)
-
+if(CORE_EMSCRIPTEN)
 
     set_target_properties(
         LastFall PROPERTIES
@@ -60,9 +54,7 @@ if(EMSCRIPTEN)
         RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/emscripten/
     )
 
-
 else()
-
 
     set_target_properties(
         LastFall PROPERTIES
@@ -70,5 +62,13 @@ else()
         RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/linux_x86_64/
     )
 
+    if(NOT CORE_DEBUG)
+
+        add_custom_command(
+            TARGET LastFall POST_BUILD
+            COMMAND ${ENGINE_DIRECTORY}/tools/scripts/extract_symbols.sh $<TARGET_FILE:LastFall>
+        )
+
+    endif()
 
 endif()

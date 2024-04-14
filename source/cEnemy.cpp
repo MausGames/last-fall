@@ -76,7 +76,7 @@ void cEnemy::Execute()
 
     switch(m_iType)
     {
-    default: ASSERT(false)
+    default: UNREACHABLE
 
     // do nothing
     case 0u:

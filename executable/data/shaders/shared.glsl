@@ -9,6 +9,3 @@
 
 
 const vec3 c_v3Camera = vec3(0.0, 1.0, -1.0);
-
-
-#line 1

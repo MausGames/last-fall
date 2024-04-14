@@ -6,6 +6,7 @@
 //| Released under the zlib License               |//
 //*-----------------------------------------------*//
 /////////////////////////////////////////////////////
+#include "shared.glsl"
 
 
 varying vec3 v_v3Normal;

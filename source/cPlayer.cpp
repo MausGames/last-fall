@@ -34,14 +34,14 @@ void cPlayer::Move()
 {
     coreVector2 vMove = coreVector2(0.0f,0.0f);
 
-         if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(D), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(RIGHT), CORE_INPUT_HOLD)) vMove.x =  1.0f;
-    else if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(A), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(LEFT),  CORE_INPUT_HOLD)) vMove.x = -1.0f;
-         if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(W), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(UP),    CORE_INPUT_HOLD)) vMove.y =  1.0f;
-    else if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(S), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(DOWN),  CORE_INPUT_HOLD)) vMove.y = -1.0f;
+    if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(D), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(RIGHT), CORE_INPUT_HOLD)) vMove.x += 1.0f;
+    if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(A), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(LEFT),  CORE_INPUT_HOLD)) vMove.x -= 1.0f;
+    if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(W), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(UP),    CORE_INPUT_HOLD)) vMove.y += 1.0f;
+    if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(S), CORE_INPUT_HOLD) || Core::Input->GetKeyboardButton(CORE_INPUT_KEY(DOWN),  CORE_INPUT_HOLD)) vMove.y -= 1.0f;
 
-    Core::Input->ForwardHatToStick(0u);
+    Core::Input->ForwardHatToStick(CORE_INPUT_JOYSTICK_ANY);
 
-    const coreVector2 vStick = Core::Input->GetJoystickRelativeL(0u);
+    const coreVector2 vStick = Core::Input->GetJoystickStickL(CORE_INPUT_JOYSTICK_ANY);
     vMove += coreVector2::Direction(ROUND(vStick.Angle() / (0.25f*PI)) * (0.25f*PI)) * vStick.Length();
 
     if(!vMove.IsNull()) vMove = vMove.Normalized();
@@ -61,8 +61,8 @@ void cPlayer::Move()
     {
         const coreMatrix3 mRota = coreMatrix4::RotationAxis(m_vVelocity.Length() * TIME * -1.1f, coreVector3(m_vVelocity.Rotated90().Normalized(), 0.0f)).m123();
 
-        this->SetDirection  (this->GetDirection  () * mRota);
-        this->SetOrientation(this->GetOrientation() * mRota);
+        this->SetDirection  ((this->GetDirection  () * mRota).Normalized());
+        this->SetOrientation((this->GetOrientation() * mRota).Normalized());
     }
 
     this->coreObject3D::Move();
