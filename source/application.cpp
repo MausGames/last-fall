@@ -19,22 +19,24 @@ const coreUint8       CoreApp::Settings::Graphics::StencilSize         = 8u;
 const coreBool        CoreApp::Settings::Graphics::AlphaChannel        = false;
 const coreBool        CoreApp::Settings::Graphics::DoubleBuffer        = true;
 const coreBool        CoreApp::Settings::Graphics::StereoRender        = false;
-const coreUint32      CoreApp::Settings::Platform::SteamAppID          = 0u;
+const coreUint32      CoreApp::Settings::Platform::SteamAppID[2]       = {0u, 0u};
 const coreChar* const CoreApp::Settings::Platform::EpicProductID       = NULL;
 const coreChar* const CoreApp::Settings::Platform::EpicSandboxID   [3] = {NULL, NULL, NULL};
 const coreChar* const CoreApp::Settings::Platform::EpicDeploymentID[3] = {NULL, NULL, NULL};
 const coreChar* const CoreApp::Settings::Platform::EpicClientID        = NULL;
 const coreChar* const CoreApp::Settings::Platform::EpicClientSecret    = NULL;
 
+coreBool CoreApp::Settings::IsDemo() {return false;}
+
 
 // ****************************************************************
 // setup the application
 void CoreApp::Setup()
 {
-    Core::Manager::Resource->Load<coreModel>  ("default_sphere.md3",      CORE_RESOURCE_UPDATE_AUTO,   "data/models/default_sphere.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
-    Core::Manager::Resource->Load<coreModel>  ("object_cube.md3",         CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_cube.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
-    Core::Manager::Resource->Load<coreModel>  ("object_enemy.md3",        CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_enemy.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
-    Core::Manager::Resource->Load<coreModel>  ("object_player.md3",       CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_player.md3", CORE_MODEL_LOAD_NO_CLUSTERS);
+    Core::Manager::Resource->Load<coreModel>  ("default_sphere.md3z",     CORE_RESOURCE_UPDATE_AUTO,   "data/models/default_sphere.md3z", CORE_MODEL_LOAD_NO_CLUSTERS);
+    Core::Manager::Resource->Load<coreModel>  ("object_cube.md3z",        CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_cube.md3z", CORE_MODEL_LOAD_NO_CLUSTERS);
+    Core::Manager::Resource->Load<coreModel>  ("object_enemy.md3z",       CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_enemy.md3z", CORE_MODEL_LOAD_NO_CLUSTERS);
+    Core::Manager::Resource->Load<coreModel>  ("object_player.md3z",      CORE_RESOURCE_UPDATE_AUTO,   "data/models/object_player.md3z", CORE_MODEL_LOAD_NO_CLUSTERS);
 
     Core::Manager::Resource->Load<coreTexture>("point.webp",              CORE_RESOURCE_UPDATE_AUTO,   "data/textures/point.webp", CORE_TEXTURE_LOAD_R);
     Core::Manager::Resource->Load<coreTexture>("text.webp",               CORE_RESOURCE_UPDATE_AUTO,   "data/textures/text.webp");

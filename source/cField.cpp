@@ -47,6 +47,11 @@ cField::cField()noexcept
 // ****************************************************************
 cField::~cField()
 {
+    m_TileMemory  .Shutdown();
+    m_EnemyMemory .Shutdown();
+    m_DoorMemory  .Shutdown();
+    m_ShadowMemory.Shutdown();
+
     this->Unload();
 }
 
@@ -169,7 +174,7 @@ RETURN_RESTRICT cEnemy* cField::__CreateEnemy()
     cEnemy*       pEnemy  = POOLED_NEW(m_EnemyMemory,  cEnemy);
     coreObject3D* pShadow = POOLED_NEW(m_ShadowMemory, coreObject3D);
 
-    pShadow->DefineModel  ("default_sphere.md3");
+    pShadow->DefineModel  ("default_sphere.md3z");
     pShadow->DefineProgram("shadow_object_program");
     pShadow->SetSize      (coreVector3(1.0f,1.0f,1.0f) * 0.95f * ENEMY_SCALE);
 

@@ -17,13 +17,13 @@ cPlayer::cPlayer()noexcept
 , m_bFalling        (false)
 , m_bLanding        (true)
 {
-    this->DefineModel  ("object_player.md3");
+    this->DefineModel  ("object_player.md3z");
     this->DefineProgram("object_player_program");
 
     this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * PLAYER_SCALE);
     this->SetColor3(coreVector3(0.8f,0.8f,0.8f));
 
-    m_Shadow.DefineModel  ("default_sphere.md3");
+    m_Shadow.DefineModel  ("default_sphere.md3z");
     m_Shadow.DefineProgram("shadow_object_program");
     m_Shadow.SetSize      (coreVector3(1.0f,1.0f,1.0f) * 0.95f);
 }

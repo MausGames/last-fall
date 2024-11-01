@@ -20,7 +20,7 @@ cTile::cTile()noexcept
 , m_bDisable      (false)
 , m_fDisableTime  (0.0f)
 {
-    this->DefineModel  ("object_cube.md3");
+    this->DefineModel  ("object_cube.md3z");
     this->DefineTexture(0u, "text.webp");
     this->DefineProgram("object_tile_program");
 

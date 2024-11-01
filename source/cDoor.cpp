@@ -17,7 +17,7 @@ cDoor::cDoor()noexcept
 , m_bDisable     (false)
 , m_fDisableTime (0.0f)
 {
-    this->DefineModel  ("object_cube.md3");
+    this->DefineModel  ("object_cube.md3z");
     this->DefineProgram("object_door_program");
 
     this->SetSize  (coreVector3(1.0f,1.0f,1.0f) * DOOR_SCALE);
