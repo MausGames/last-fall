@@ -80,11 +80,6 @@ void CoreApp::Move()
         Core::Reshape();
     }
 
-    if(Core::Input->GetKeyboardButton(CORE_INPUT_KEY(ESCAPE), CORE_INPUT_PRESS))
-    {
-        Core::System->Quit();
-    }
-
     const coreVector2 vResolution = Core::System->GetResolution();
     s_pFullscreen->SetSize(vResolution / vResolution.Min());
 

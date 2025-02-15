@@ -11,9 +11,14 @@
 // project settings
 const coreChar* const CoreApp::Settings::Name                          = "Last Fall";
 const coreChar* const CoreApp::Settings::Version                       = "1.2.0";
+const coreChar* const CoreApp::Settings::Identifier                    = "at.maus-games.last-fall";
+const coreChar* const CoreApp::Settings::Creator                       = "Martin Mauersics";
+const coreChar* const CoreApp::Settings::Year                          = "2021";
+const coreChar* const CoreApp::Settings::Website                       = "https://www.maus-games.at";
 const coreChar* const CoreApp::Settings::IconPath                      = "data/textures/game_icon.webp";
 const coreChar* const CoreApp::Settings::CursorPath                    = "data/textures/default_cursor.webp";
 const coreBool        CoreApp::Settings::UserManagement                = false;
+const coreDouble      CoreApp::Settings::System::AspectRatio           = 16.0/9.0;
 const coreUint8       CoreApp::Settings::Graphics::DepthSize           = 16u;
 const coreUint8       CoreApp::Settings::Graphics::StencilSize         = 8u;
 const coreBool        CoreApp::Settings::Graphics::AlphaChannel        = false;
@@ -68,7 +73,7 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreSound>  ("kick.opus",               CORE_RESOURCE_UPDATE_AUTO,   "data/sounds/kick.opus", CORE_SOUND_LOAD_MULAW);
     Core::Manager::Resource->Load<coreSound>  ("unlock.opus",             CORE_RESOURCE_UPDATE_AUTO,   "data/sounds/unlock.opus", CORE_SOUND_LOAD_MULAW);
 
-    Core::Manager::Resource->Load<coreFont>   ("sadanasquare.ttf",        CORE_RESOURCE_UPDATE_AUTO,   "data/fonts/sadanasquare.ttf");
+    Core::Manager::Resource->Load<coreFont>   ("sadanasquare.ttf",        CORE_RESOURCE_UPDATE_AUTO,   "data/fonts/sadanasquare.ttf", TTF_HINTING_LIGHT_SUBPIXEL);
 
     d_cast<coreProgram*>(Core::Manager::Resource->Load<coreProgram>("fullscreen_program", CORE_RESOURCE_UPDATE_AUTO, NULL)->GetRawResource())
         ->AttachShader("fullscreen.vert")
