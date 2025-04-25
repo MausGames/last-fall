@@ -21,7 +21,7 @@ static coreMusicPlayer s_MusicPlayer = {};
 void CoreApp::Init()
 {
     Core::Graphics->SetCamera(CAMERA_POSITION, CAMERA_DIRECTION, CAMERA_ORIENTATION);
-    Core::Graphics->SetView(Core::System->GetResolution(), DEG_TO_RAD(45.0f), 10.0f, 500.0f);
+    Core::Graphics->SetView(Core::System->GetResolution(), DEG_TO_RAD(45.0f), 10.0f, 500.0f, 0.0f);
 
     STATIC_NEW(g_pInterface)
     STATIC_NEW(g_pGame)
