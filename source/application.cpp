@@ -47,8 +47,8 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreTexture>("point.webp",              CORE_RESOURCE_UPDATE_AUTO,   "data/textures/point.webp", CORE_TEXTURE_LOAD_R);
     Core::Manager::Resource->Load<coreTexture>("text.webp",               CORE_RESOURCE_UPDATE_AUTO,   "data/textures/text.webp");
 
-    Core::Manager::Resource->Load<coreShader> ("fullscreen.vert",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.vert", CORE_SHADER_OPTION_NO_ROTATION);
-    Core::Manager::Resource->Load<coreShader> ("fullscreen.frag",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.frag");
+    Core::Manager::Resource->Load<coreShader> ("fullscreen.vert",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.vert", CORE_SHADER_OPTION_NO_ROTATION CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("fullscreen.frag",         CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/fullscreen.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
     Core::Manager::Resource->Load<coreShader> ("object_door.vert",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_door.vert", CORE_SHADER_OPTION_NO_ROTATION);
     Core::Manager::Resource->Load<coreShader> ("object_door.frag",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_door.frag");
     Core::Manager::Resource->Load<coreShader> ("object_door_inst.vert",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_door.vert", CORE_SHADER_OPTION_INSTANCING CORE_SHADER_OPTION_NO_ROTATION);
@@ -63,9 +63,9 @@ void CoreApp::Setup()
     Core::Manager::Resource->Load<coreShader> ("object_tile.frag",        CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_tile.frag");
     Core::Manager::Resource->Load<coreShader> ("object_tile_inst.vert",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_tile.vert", CORE_SHADER_OPTION_INSTANCING CORE_SHADER_OPTION_NO_ROTATION);
     Core::Manager::Resource->Load<coreShader> ("object_tile_inst.frag",   CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/object_tile.frag", CORE_SHADER_OPTION_INSTANCING);
-    Core::Manager::Resource->Load<coreShader> ("point.frag",              CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/point.frag");
-    Core::Manager::Resource->Load<coreShader> ("shadow_layer.vert",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_layer.vert", CORE_SHADER_OPTION_NO_ROTATION);
-    Core::Manager::Resource->Load<coreShader> ("shadow_layer.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_layer.frag");
+    Core::Manager::Resource->Load<coreShader> ("point.frag",              CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/point.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("shadow_layer.vert",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_layer.vert", CORE_SHADER_OPTION_NO_ROTATION CORE_SHADER_OPTION_NO_PERSPECTIVE);
+    Core::Manager::Resource->Load<coreShader> ("shadow_layer.frag",       CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_layer.frag", CORE_SHADER_OPTION_NO_PERSPECTIVE);
     Core::Manager::Resource->Load<coreShader> ("shadow_object.vert",      CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_object.vert", CORE_SHADER_OPTION_NO_ROTATION);
     Core::Manager::Resource->Load<coreShader> ("shadow_object.frag",      CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_object.frag", CORE_SHADER_OPTION_NO_EARLY_DEPTH);
     Core::Manager::Resource->Load<coreShader> ("shadow_object_inst.vert", CORE_RESOURCE_UPDATE_MANUAL, "data/shaders/shadow_object.vert", CORE_SHADER_OPTION_INSTANCING CORE_SHADER_OPTION_NO_ROTATION);

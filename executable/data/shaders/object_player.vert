@@ -9,9 +9,9 @@
 #include "engine/data_transform_3d.glsl"
 
 
-varying vec3  v_v3Normal;
-varying vec3  v_v3Relative;
-varying float v_v1Length;
+smoothEx varying vec3  v_v3Normal;
+smoothEx varying vec3  v_v3Relative;
+smoothEx varying float v_v1Length;
 
 
 void VertexMain()
