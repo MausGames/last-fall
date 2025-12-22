@@ -1,5 +1,6 @@
 # Last Fall
 
+[![engine: core](material/readme/badge_engine.svg)](https://github.com/MausGames/core-engine)
 [![software license: zlib](material/readme/badge_license_software.svg)](LICENSE.txt)
 [![content license: CC BY](material/readme/badge_license_content.svg)](https://creativecommons.org/licenses/by/4.0/)
 [![credits.txt](material/readme/badge_credits.svg)](executable/data/credits.txt)
@@ -11,7 +12,7 @@ Try not to fall… until the end.
 > - frictionless navigation and restart without menu
 > - try to get tossed over puzzles you don't like
 
-#
+## Links
 
 **Windows, Linux and Browser Version:**  
 <https://mausgames.itch.io/last-fall>
@@ -20,10 +21,9 @@ Try not to fall… until the end.
 <https://ldjam.com/events/ludum-dare/49/last-fall>
 
 **Music:**  
-by Tim Beek (<https://timbeek.com>)  
-from Drama Music Pack (<https://timbeek.itch.io/drama-music-pack>)
+by [Tim Beek](https://timbeek.com) from [Drama Music Pack](https://timbeek.itch.io/drama-music-pack)
 
-#
+<br>
 
 <table>
     <tr>
