@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.25)
+cmake_minimum_required(VERSION 3.31)
 
 set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 set(ENGINE_DIRECTORY ${BASE_DIRECTORY}/../core-engine)
@@ -11,6 +11,7 @@ set_target_properties(
     LastFall PROPERTIES
     C_STANDARD 17
     CXX_STANDARD 23
+    CXX_SCAN_FOR_MODULES OFF
     DEBUG_POSTFIX _debug
     BUILD_WITH_INSTALL_RPATH TRUE
     INSTALL_RPATH $ORIGIN
@@ -51,7 +52,7 @@ if(CORE_EMSCRIPTEN)
     set_target_properties(
         LastFall PROPERTIES
         SUFFIX .html
-        RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/emscripten/
+        RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/emscripten
     )
 
 else()
@@ -59,7 +60,7 @@ else()
     set_target_properties(
         LastFall PROPERTIES
         SUFFIX .elf
-        RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/linux_x86_64/
+        RUNTIME_OUTPUT_DIRECTORY ${BASE_DIRECTORY}/executable/bin/linux_x86_64
     )
 
     if(NOT CORE_DEBUG)

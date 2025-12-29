@@ -87,7 +87,7 @@ void CGame::Move()
 
                 pEnemy->Bump();
 
-                if(m_pKickSound.IsUsable()) m_pKickSound->PlayPosition(NULL, 1.0f, 1.0f, false, 0u, pEnemy->GetPosition());
+                if(m_pKickSound.IsUsable()) m_pKickSound->PlayPosition(NULL, 1.0f, 1.0f, false, CORE_AUDIO_TYPE_NONE, CORE_AUDIO_EFFECT_NONE, pEnemy->GetPosition());
 
                 bFalling = true;
                 break;
@@ -175,5 +175,5 @@ void CGame::RenderShadow()
 // ****************************************************************
 void CGame::PlayUnlockSound(const coreVector3 vPosition)
 {
-    if(m_pUnlockSound.IsUsable()) m_pUnlockSound->PlayPosition(NULL, 0.6f, 0.8f, false, 0u, vPosition);
+    if(m_pUnlockSound.IsUsable()) m_pUnlockSound->PlayPosition(NULL, 0.6f, 0.8f, false, CORE_AUDIO_TYPE_NONE, CORE_AUDIO_EFFECT_NONE, vPosition);
 }

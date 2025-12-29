@@ -357,7 +357,7 @@ void CField::__Setup(const coreUint8 iCheckpoint)
         oNewPoint.X = F_TO_SI(ROUND((*it)->GetPosition().x / TILE_SCALE));
         oNewPoint.Y = F_TO_SI(ROUND((*it)->GetPosition().y / TILE_SCALE));
 
-        aPointList.push_back(oNewPoint);
+        aPointList.push_back_unsafe(oNewPoint);
     }
 
     FOR_EACH(it, aPointList)

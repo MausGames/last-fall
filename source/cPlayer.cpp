@@ -50,8 +50,8 @@ void CPlayer::Move()
     m_vVelocity       += vMove * (PLAYER_ACCELERATION        * TIME) * (m_bFalling ? 0.0f : 1.0f);
     m_fVelocityHeight += -1.0f * (PLAYER_ACCELERATION_HEIGHT * TIME);
 
-    if(!m_vVelocity.IsNull()) m_vVelocity       *= POW(1.0f - PLAYER_BRAKE        * (1.0f/60.0f) * (m_bFalling ? 0.2f : 1.0f), 60.0f * TIME);
-    if(m_fVelocityHeight)     m_fVelocityHeight *= POW(1.0f - PLAYER_BRAKE_HEIGHT * (1.0f/60.0f),                              60.0f * TIME);
+    if(!m_vVelocity.IsNull()) m_vVelocity       *= coreMath::Friction(PLAYER_BRAKE * (m_bFalling ? 0.2f : 1.1f), TIME);
+    if(m_fVelocityHeight)     m_fVelocityHeight *= coreMath::Friction(PLAYER_BRAKE_HEIGHT,                       TIME);
 
     const coreVector2 vNewPos    = this->GetPosition().xy() + m_vVelocity       * TIME;
     const coreFloat   fNewHeight = this->GetPosition().z    + m_fVelocityHeight * TIME;

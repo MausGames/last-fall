@@ -124,7 +124,7 @@ void CEnemy::Execute()
                 const coreVector2 vDir = (pPlayer->GetPosition().xy() - this->GetPosition().xy()).Normalized();
 
                 m_vJobVelocity += vDir * (90.0f * TIME);
-                m_vJobVelocity *= POW(1.0f - 1.0f * (1.0f/60.0f), 60.0f * TIME);
+                m_vJobVelocity *= coreMath::Friction(1.0f, TIME);
 
                 const coreVector2 vNewPos = this->GetPosition().xy() + m_vJobVelocity * TIME;
 
