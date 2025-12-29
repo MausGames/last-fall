@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cEnemy::cEnemy()noexcept
+CEnemy::CEnemy()noexcept
 : coreObject3D   ()
 , m_fRotation    (0.0f)
 , m_fBump        (0.0f)
@@ -31,7 +31,7 @@ cEnemy::cEnemy()noexcept
 
 
 // ****************************************************************
-void cEnemy::Move()
+void CEnemy::Move()
 {
     if(m_bDisable)
     {
@@ -58,7 +58,7 @@ void cEnemy::Move()
 
 
 // ****************************************************************
-void cEnemy::Configure(const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed)
+void CEnemy::Configure(const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed)
 {
     m_iType        = iType;
     m_fJobTime     = fTimeOffset;
@@ -70,7 +70,7 @@ void cEnemy::Configure(const coreUint8 iType, const coreFloat fTimeOffset, const
 
 
 // ****************************************************************
-void cEnemy::Execute()
+void CEnemy::Execute()
 {
     m_fJobTime.Update(m_fJobSpeed);
 
@@ -107,8 +107,8 @@ void cEnemy::Execute()
     // follow the player
     case 4u:
         {
-            const cPlayer*          pPlayer     = g_pGame->GetPlayer();
-            const coreList<cTile*>* papTileList = g_pGame->GetField()->GetTileList();
+            const CPlayer*          pPlayer     = g_pGame->GetPlayer();
+            const coreList<CTile*>* papTileList = g_pGame->GetField()->GetTileList();
             const coreUintW         iFinalIndex = g_pGame->GetField()->GetFinalCheckpointIndex();
 
             const coreUint32 iTotal = g_pGame->GetField()->CalculateTileValue(iFinalIndex + 1u, papTileList->size());

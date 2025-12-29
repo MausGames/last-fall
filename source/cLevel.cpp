@@ -13,7 +13,7 @@
 
 
 // ****************************************************************
-void cField::__Setup(const coreUint8 iCheckpoint)
+void CField::__Setup(const coreUint8 iCheckpoint)
 {
     coreInt32 X = 0, Y = 0;
 

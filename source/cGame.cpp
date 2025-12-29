@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cGame::cGame()noexcept
+CGame::CGame()noexcept
 : m_Player          ()
 , m_Field           ()
 , m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 2u : 0u)   // debug start
@@ -27,7 +27,7 @@ cGame::cGame()noexcept
 
 
 // ****************************************************************
-void cGame::Render()
+void CGame::Render()
 {
     if(m_Player.GetFalling()) m_Player.Render();   // for correct blending behind disappearing field
 
@@ -40,16 +40,16 @@ void cGame::Render()
 
 
 // ****************************************************************
-void cGame::Move()
+void CGame::Move()
 {
     m_Player.Move();
 
     coreBool bFalling = true;
 
-    const coreList<cTile*>* papTileList = m_Field.GetTileList();
+    const coreList<CTile*>* papTileList = m_Field.GetTileList();
     FOR_EACH(it, *papTileList)
     {
-        cTile* pTile = (*it);
+        CTile* pTile = (*it);
         if(pTile->GetDisable()) continue;
 
         const coreVector2 vDiff = m_Player.GetPosition().xy() - pTile->GetPosition().xy();
@@ -71,10 +71,10 @@ void cGame::Move()
 
     if(m_Player.GetVelocityHeight() <= 0.0f)
     {
-        const coreList<cEnemy*>* papEnemyList = m_Field.GetEnemyList();
+        const coreList<CEnemy*>* papEnemyList = m_Field.GetEnemyList();
         FOR_EACH(it, *papEnemyList)
         {
-            cEnemy* pEnemy = (*it);
+            CEnemy* pEnemy = (*it);
             if(pEnemy->GetDisable()) continue;
 
             const coreVector3 vDiff = m_Player.GetPosition() - pEnemy->GetPosition();
@@ -95,10 +95,10 @@ void cGame::Move()
         }
     }
 
-    const coreList<cDoor*>* papDoorList = m_Field.GetDoorList();
+    const coreList<CDoor*>* papDoorList = m_Field.GetDoorList();
     FOR_EACH(it, *papDoorList)
     {
-        cDoor* pDoor = (*it);
+        CDoor* pDoor = (*it);
         if(pDoor->GetDisable()) continue;
 
         const coreVector3 vDiff = m_Player.GetPosition() - pDoor->GetPosition();
@@ -134,7 +134,7 @@ void cGame::Move()
 
             const coreVector2 vShift = m_vSmoothCam - m_Player.GetPosition().xy();
 
-            const cTile* pFirst = m_Field.GetTileList()->front();
+            const CTile* pFirst = m_Field.GetTileList()->front();
 
             m_Player.SetFullPosition(coreVector3(pFirst->GetPosition().xy(), m_Player.GetPosition().z + GAME_HEIGHT * 2.0f));
             m_Player.SetLanding     (true);
@@ -163,7 +163,7 @@ void cGame::Move()
 
 
 // ****************************************************************
-void cGame::RenderShadow()
+void CGame::RenderShadow()
 {
     if(m_fOutro) return;
 
@@ -173,7 +173,7 @@ void cGame::RenderShadow()
 
 
 // ****************************************************************
-void cGame::PlayUnlockSound(const coreVector3 vPosition)
+void CGame::PlayUnlockSound(const coreVector3 vPosition)
 {
     if(m_pUnlockSound.IsUsable()) m_pUnlockSound->PlayPosition(NULL, 0.6f, 0.8f, false, 0u, vPosition);
 }

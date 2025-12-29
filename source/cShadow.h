@@ -12,12 +12,12 @@
 
 
 // ****************************************************************
-class cShadow final : public coreFullscreen
+class CShadow final : public coreFullscreen
 {
 public:
-    cShadow()noexcept;
+    CShadow()noexcept;
 
-    DISABLE_COPY(cShadow)
+    DISABLE_COPY(CShadow)
 
     void Apply();
 };

@@ -8,9 +8,9 @@
 /////////////////////////////////////////////////////
 #include "main.h"
 
-STATIC_MEMORY(cInterface,     g_pInterface)
-STATIC_MEMORY(cGame,          g_pGame)
-STATIC_MEMORY(cShadow,        g_pShadow)
+STATIC_MEMORY(CInterface,     g_pInterface)
+STATIC_MEMORY(CGame,          g_pGame)
+STATIC_MEMORY(CShadow,        g_pShadow)
 STATIC_MEMORY(coreFullscreen, s_pFullscreen)
 
 static coreMusicPlayer s_MusicPlayer = {};

@@ -54,9 +54,9 @@
 
 // ****************************************************************
 // global variables
-extern cInterface* const g_pInterface;
-extern cGame*      const g_pGame;
-extern cShadow*    const g_pShadow;
+extern CInterface* const g_pInterface;
+extern CGame*      const g_pGame;
+extern CShadow*    const g_pShadow;
 
 
 #endif // _LAF_GUARD_MAIN_H_

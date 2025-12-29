@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cField::cField()noexcept
+CField::CField()noexcept
 : m_apTile                {}
 , m_apEnemy               {}
 , m_apDoor                {}
@@ -19,9 +19,9 @@ cField::cField()noexcept
 , m_EnemyList             (FIELD_RESERVE_ENEMIES)
 , m_DoorList              (FIELD_RESERVE_DOORS)
 , m_ShadowList            (FIELD_RESERVE_ENEMIES)
-, m_TileMemory            (sizeof(cTile),        FIELD_RESERVE_TILES)
-, m_EnemyMemory           (sizeof(cEnemy),       FIELD_RESERVE_ENEMIES)
-, m_DoorMemory            (sizeof(cDoor),        FIELD_RESERVE_DOORS)
+, m_TileMemory            (sizeof(CTile),        FIELD_RESERVE_TILES)
+, m_EnemyMemory           (sizeof(CEnemy),       FIELD_RESERVE_ENEMIES)
+, m_DoorMemory            (sizeof(CDoor),        FIELD_RESERVE_DOORS)
 , m_ShadowMemory          (sizeof(coreObject3D), FIELD_RESERVE_ENEMIES)
 , m_fAlpha                (1.0f)
 , m_iFinalCheckpoint      (0u)
@@ -45,7 +45,7 @@ cField::cField()noexcept
 
 
 // ****************************************************************
-cField::~cField()
+CField::~CField()
 {
     m_TileMemory  .Shutdown();
     m_EnemyMemory .Shutdown();
@@ -57,7 +57,7 @@ cField::~cField()
 
 
 // ****************************************************************
-void cField::Render()
+void CField::Render()
 {
     m_EnemyList.Render();
     m_DoorList .Render();
@@ -66,7 +66,7 @@ void cField::Render()
 
 
 // ****************************************************************
-void cField::Move()
+void CField::Move()
 {
     FOR_EACH(it, m_apTile)  {(*it)->SetAlpha(m_fAlpha); if((*it)->GetDisable()) {m_TileList .UnbindObject(*it); (*it)->Move();}}
     FOR_EACH(it, m_apEnemy) {(*it)->SetAlpha(m_fAlpha); if((*it)->GetDisable()) {m_EnemyList.UnbindObject(*it); (*it)->Move();}}
@@ -75,7 +75,7 @@ void cField::Move()
     FOR_EACH(it, m_apShadow)
     {
         const coreUintW iIndex = m_apShadow.index(it);
-        const cEnemy*   pEnemy = m_apEnemy[iIndex];
+        const CEnemy*   pEnemy = m_apEnemy[iIndex];
 
         (*it)->SetPosition(pEnemy->GetPosition() + coreVector3(0.0f, 0.0f, -ENEMY_SCALE));
         (*it)->SetEnabled (pEnemy->GetDisable() ? CORE_OBJECT_ENABLE_NOTHING : CORE_OBJECT_ENABLE_ALL);
@@ -89,7 +89,7 @@ void cField::Move()
 
 
 // ****************************************************************
-void cField::RenderTransparent()
+void CField::RenderTransparent()
 {
     coreList<coreObject3D*> apSort;
 
@@ -107,14 +107,14 @@ void cField::RenderTransparent()
 
 
 // ****************************************************************
-void cField::RenderShadow()
+void CField::RenderShadow()
 {
     m_ShadowList.Render();
 }
 
 
 // ****************************************************************
-void cField::Load(const coreUint8 iCheckpoint)
+void CField::Load(const coreUint8 iCheckpoint)
 {
     this->Unload();
     this->__Setup(iCheckpoint);
@@ -122,7 +122,7 @@ void cField::Load(const coreUint8 iCheckpoint)
 
 
 // ****************************************************************
-void cField::Unload()
+void CField::Unload()
 {
     FOR_EACH(it, m_apTile)   POOLED_DELETE(m_TileMemory,   *it)
     FOR_EACH(it, m_apEnemy)  POOLED_DELETE(m_EnemyMemory,  *it)
@@ -142,7 +142,7 @@ void cField::Unload()
 
 
 // ****************************************************************
-coreUint32 cField::CalculateTileValue(const coreUintW iFrom, const coreUintW iTo)const
+coreUint32 CField::CalculateTileValue(const coreUintW iFrom, const coreUintW iTo)const
 {
     coreUint32 iTotal = 0u;
 
@@ -157,9 +157,9 @@ coreUint32 cField::CalculateTileValue(const coreUintW iFrom, const coreUintW iTo
 
 
 // ****************************************************************
-RETURN_RESTRICT cTile* cField::__CreateTile()
+RETURN_RESTRICT CTile* CField::__CreateTile()
 {
-    cTile* pTile = POOLED_NEW(m_TileMemory, cTile);
+    CTile* pTile = POOLED_NEW(m_TileMemory, CTile);
 
     m_apTile  .push_back (pTile);
     m_TileList.BindObject(pTile);
@@ -169,9 +169,9 @@ RETURN_RESTRICT cTile* cField::__CreateTile()
 
 
 // ****************************************************************
-RETURN_RESTRICT cEnemy* cField::__CreateEnemy()
+RETURN_RESTRICT CEnemy* CField::__CreateEnemy()
 {
-    cEnemy*       pEnemy  = POOLED_NEW(m_EnemyMemory,  cEnemy);
+    CEnemy*       pEnemy  = POOLED_NEW(m_EnemyMemory,  CEnemy);
     coreObject3D* pShadow = POOLED_NEW(m_ShadowMemory, coreObject3D);
 
     pShadow->DefineModel  ("default_sphere.md3z");
@@ -189,9 +189,9 @@ RETURN_RESTRICT cEnemy* cField::__CreateEnemy()
 
 
 // ****************************************************************
-RETURN_RESTRICT cDoor* cField::__CreateDoor()
+RETURN_RESTRICT CDoor* CField::__CreateDoor()
 {
-    cDoor* pDoor = POOLED_NEW(m_DoorMemory, cDoor);
+    CDoor* pDoor = POOLED_NEW(m_DoorMemory, CDoor);
 
     m_apDoor  .push_back (pDoor);
     m_DoorList.BindObject(pDoor);
@@ -201,9 +201,9 @@ RETURN_RESTRICT cDoor* cField::__CreateDoor()
 
 
 // ****************************************************************
-void cField::__CreateTileExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iValue, const coreUint8 iCheckpoint)
+void CField::__CreateTileExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iValue, const coreUint8 iCheckpoint)
 {
-    cTile* pTile = this->__CreateTile();
+    CTile* pTile = this->__CreateTile();
 
     pTile->SetPosition  (coreVector3(I_TO_F(iX), I_TO_F(iY), 0.0f) * TILE_SCALE);
     pTile->SetValue     (iValue);
@@ -221,9 +221,9 @@ void cField::__CreateTileExt(const coreInt32 iX, const coreInt32 iY, const coreU
 
 
 // ****************************************************************
-void cField::__CreateEnemExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed, const coreVector2 vPosOffset)
+void CField::__CreateEnemExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed, const coreVector2 vPosOffset)
 {
-    cEnemy* pEnemy = this->__CreateEnemy();
+    CEnemy* pEnemy = this->__CreateEnemy();
 
     pEnemy->SetPosition(coreVector3(I_TO_F(iX) + vPosOffset.x, I_TO_F(iY) + vPosOffset.y, 0.0f) * TILE_SCALE);
     pEnemy->Configure  (iType, fTimeOffset, fMoveOffset * TILE_SCALE, fSpeed);
@@ -234,11 +234,11 @@ void cField::__CreateEnemExt(const coreInt32 iX, const coreInt32 iY, const coreU
 
 
 // ****************************************************************
-void cField::__CreateDoorExt(const coreInt32 iX, const coreInt32 iY)
+void CField::__CreateDoorExt(const coreInt32 iX, const coreInt32 iY)
 {
     if(m_iDoorMarker < m_apTile.size())   // do not create door on respawn position
     {
-        cDoor* pDoor = this->__CreateDoor();
+        CDoor* pDoor = this->__CreateDoor();
 
         pDoor->SetPosition(coreVector3(I_TO_F(iX), I_TO_F(iY), 0.0f) * TILE_SCALE);
         pDoor->SetCheck   (m_iDoorMarker, m_apTile.size());
@@ -252,14 +252,14 @@ void cField::__CreateDoorExt(const coreInt32 iX, const coreInt32 iY)
 
 
 // ****************************************************************
-void cField::__DoorMarker()
+void CField::__DoorMarker()
 {
     m_iDoorMarker = m_apTile.size();
 }
 
 
 // ****************************************************************
-void cField::__RetrieveLast(coreInt32* OUTPUT pX, coreInt32* OUTPUT pY)const
+void CField::__RetrieveLast(coreInt32* OUTPUT pX, coreInt32* OUTPUT pY)const
 {
     ASSERT(pX && pY)
 

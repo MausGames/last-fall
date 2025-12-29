@@ -17,11 +17,11 @@
 
 
 // ****************************************************************
-class cGame final
+class CGame final
 {
 private:
-    cPlayer m_Player;
-    cField  m_Field;
+    CPlayer m_Player;
+    CField  m_Field;
 
     coreUint8 m_iLastCheckpoint;
     coreFlow  m_fOutro;
@@ -33,9 +33,9 @@ private:
 
 
 public:
-    cGame()noexcept;
+    CGame()noexcept;
 
-    DISABLE_COPY(cGame)
+    DISABLE_COPY(CGame)
 
     void Render();
     void Move();
@@ -46,8 +46,8 @@ public:
 
     inline void SetLastCheckpoint(const coreUint8 iLastCheckpoint) {if(m_iLastCheckpoint < iLastCheckpoint) m_iLastCheckpoint = iLastCheckpoint;}
 
-    inline cPlayer*         GetPlayer()      {return &m_Player;}
-    inline cField*          GetField ()      {return &m_Field;}
+    inline CPlayer*         GetPlayer()      {return &m_Player;}
+    inline CField*          GetField ()      {return &m_Field;}
     inline const coreFloat& GetOutro ()const {return m_fOutro;}
 };
 

@@ -18,12 +18,12 @@
 
 
 // ****************************************************************
-class cField final
+class CField final
 {
 private:
-    coreList<cTile*>        m_apTile;
-    coreList<cEnemy*>       m_apEnemy;
-    coreList<cDoor*>        m_apDoor;
+    coreList<CTile*>        m_apTile;
+    coreList<CEnemy*>       m_apEnemy;
+    coreList<CDoor*>        m_apDoor;
     coreList<coreObject3D*> m_apShadow;
 
     coreBatchList m_TileList;
@@ -46,16 +46,16 @@ private:
     coreInt32 m_iLastX;
     coreInt32 m_iLastY;
 
-    UNUSED cTile  m_SaveTile;   // to load and hold all resources
-    UNUSED cEnemy m_SaveEnemy;
-    UNUSED cDoor  m_SaveDoor;
+    UNUSED CTile  m_SaveTile;   // to load and hold all resources
+    UNUSED CEnemy m_SaveEnemy;
+    UNUSED CDoor  m_SaveDoor;
 
 
 public:
-    cField()noexcept;
-    ~cField();
+    CField()noexcept;
+    ~CField();
 
-    DISABLE_COPY(cField)
+    DISABLE_COPY(CField)
 
     void Render();
     void Move();
@@ -70,17 +70,17 @@ public:
 
     inline void SetAlpha(const coreFloat fAlpha) {m_fAlpha = fAlpha;}
 
-    inline coreList<cTile*>*  GetTileList            ()      {return &m_apTile;}
-    inline coreList<cEnemy*>* GetEnemyList           ()      {return &m_apEnemy;}
-    inline coreList<cDoor*>*  GetDoorList            ()      {return &m_apDoor;}
+    inline coreList<CTile*>*  GetTileList            ()      {return &m_apTile;}
+    inline coreList<CEnemy*>* GetEnemyList           ()      {return &m_apEnemy;}
+    inline coreList<CDoor*>*  GetDoorList            ()      {return &m_apDoor;}
     inline const coreUint8&   GetFinalCheckpoint     ()const {return m_iFinalCheckpoint;}
     inline const coreUintW&   GetFinalCheckpointIndex()const {return m_iFinalCheckpointIndex;}
 
 
 private:
-    RETURN_RESTRICT cTile*  __CreateTile ();
-    RETURN_RESTRICT cEnemy* __CreateEnemy();
-    RETURN_RESTRICT cDoor*  __CreateDoor ();
+    RETURN_RESTRICT CTile*  __CreateTile ();
+    RETURN_RESTRICT CEnemy* __CreateEnemy();
+    RETURN_RESTRICT CDoor*  __CreateDoor ();
 
     void __CreateTileExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iValue, const coreUint8 iCheckpoint = 0u);
     void __CreateEnemExt(const coreInt32 iX, const coreInt32 iY, const coreUint8 iType, const coreFloat fTimeOffset, const coreFloat fMoveOffset, const coreFloat fSpeed, const coreVector2 vPosOffset = coreVector2(0.0f,0.0f));

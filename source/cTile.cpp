@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cTile::cTile()noexcept
+CTile::CTile()noexcept
 : coreObject3D    ()
 , m_iValue        (0u)
 , m_iCheckpoint   (0u)
@@ -32,7 +32,7 @@ cTile::cTile()noexcept
 
 
 // ****************************************************************
-void cTile::Move()
+void CTile::Move()
 {
     if(!this->IsEnabled(CORE_OBJECT_ENABLE_MOVE)) return;
 

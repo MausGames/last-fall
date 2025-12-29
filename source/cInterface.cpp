@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cInterface::cInterface()noexcept
+CInterface::CInterface()noexcept
 : m_Title       ()
 , m_Name        ()
 , m_Message     ()
@@ -55,7 +55,7 @@ cInterface::cInterface()noexcept
 
 
 // ****************************************************************
-void cInterface::Render()
+void CInterface::Render()
 {
     glDisable(GL_DEPTH_TEST);
     {
@@ -73,7 +73,7 @@ void cInterface::Render()
 
 
 // ****************************************************************
-void cInterface::Move()
+void CInterface::Move()
 {
     if(!g_pGame->GetPlayer()->GetPosition().xy().IsNull())
         m_bIntro = true;

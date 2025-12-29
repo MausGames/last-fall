@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cDoor::cDoor()noexcept
+CDoor::CDoor()noexcept
 : coreObject3D   ()
 , m_iCheckFrom   (0u)
 , m_iCheckTo     (0u)
@@ -26,7 +26,7 @@ cDoor::cDoor()noexcept
 
 
 // ****************************************************************
-void cDoor::Move()
+void CDoor::Move()
 {
     if(!this->IsEnabled(CORE_OBJECT_ENABLE_MOVE)) return;
 

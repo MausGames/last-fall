@@ -20,7 +20,7 @@
 
 
 // ****************************************************************
-class cPlayer final : public coreObject3D
+class CPlayer final : public coreObject3D
 {
 private:
     coreVector2 m_vVelocity;
@@ -33,9 +33,9 @@ private:
 
 
 public:
-    cPlayer()noexcept;
+    CPlayer()noexcept;
 
-    DISABLE_COPY(cPlayer)
+    DISABLE_COPY(CPlayer)
 
     void Move()final;
 

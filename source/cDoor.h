@@ -16,7 +16,7 @@
 
 
 // ****************************************************************
-class cDoor final : public coreObject3D
+class CDoor final : public coreObject3D
 {
 private:
     coreUintW m_iCheckFrom;
@@ -27,9 +27,9 @@ private:
 
 
 public:
-    cDoor()noexcept;
+    CDoor()noexcept;
 
-    DISABLE_COPY(cDoor)
+    DISABLE_COPY(CDoor)
 
     void Move()final;
 

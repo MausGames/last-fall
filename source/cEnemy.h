@@ -16,7 +16,7 @@
 
 
 // ****************************************************************
-class cEnemy final : public coreObject3D
+class CEnemy final : public coreObject3D
 {
 private:
     coreFlow m_fRotation;
@@ -34,9 +34,9 @@ private:
 
 
 public:
-    cEnemy()noexcept;
+    CEnemy()noexcept;
 
-    DISABLE_COPY(cEnemy)
+    DISABLE_COPY(CEnemy)
 
     void Move()final;
 

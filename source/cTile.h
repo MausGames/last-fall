@@ -19,7 +19,7 @@
 
 
 // ****************************************************************
-class cTile final : public coreObject3D
+class CTile final : public coreObject3D
 {
 private:
     coreUint8 m_iValue;
@@ -34,9 +34,9 @@ private:
 
 
 public:
-    cTile()noexcept;
+    CTile()noexcept;
 
-    DISABLE_COPY(cTile)
+    DISABLE_COPY(CTile)
 
     void Move()final;
 

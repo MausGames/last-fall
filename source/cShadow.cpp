@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cShadow::cShadow()noexcept
+CShadow::CShadow()noexcept
 : coreFullscreen ()
 {
     this->DefineProgram("shadow_layer_program");
@@ -18,7 +18,7 @@ cShadow::cShadow()noexcept
 
 
 // ****************************************************************
-void cShadow::Apply()
+void CShadow::Apply()
 {
     this->SetPosition(coreVector2(0.0f,0.0f));
     this->SetSize    (coreVector2(1.0f,1.0f) * SQRT2 * Core::System->GetResolution().AspectRatio());

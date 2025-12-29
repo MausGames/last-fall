@@ -10,7 +10,7 @@
 
 
 // ****************************************************************
-cPlayer::cPlayer()noexcept
+CPlayer::CPlayer()noexcept
 : coreObject3D      ()
 , m_vVelocity       (coreVector2(0.0f,0.0f))
 , m_fVelocityHeight (0.0f)
@@ -30,7 +30,7 @@ cPlayer::cPlayer()noexcept
 
 
 // ****************************************************************
-void cPlayer::Move()
+void CPlayer::Move()
 {
     coreVector2 vMove = coreVector2(0.0f,0.0f);
 
@@ -72,14 +72,14 @@ void cPlayer::Move()
 
 
 // ****************************************************************
-void cPlayer::RenderShadow()
+void CPlayer::RenderShadow()
 {
     m_Shadow.Render();
 }
 
 
 // ****************************************************************
-void cPlayer::Land()
+void CPlayer::Land()
 {
     if(m_bFalling) return;
 
@@ -92,7 +92,7 @@ void cPlayer::Land()
 
 
 // ****************************************************************
-void cPlayer::SetFullPosition(const coreVector3 vPosition)
+void CPlayer::SetFullPosition(const coreVector3 vPosition)
 {
     this   ->SetPosition(vPosition);
     m_Shadow.SetPosition(vPosition + coreVector3(0.0f, 0.0f, -PLAYER_SCALE));
