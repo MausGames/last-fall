@@ -29,6 +29,9 @@ CField::CField()noexcept
 , m_iDoorMarker           (0u)
 , m_iLastX                (0)
 , m_iLastY                (0)
+, m_SaveTile              ()
+, m_SaveEnemy             ()
+, m_SaveDoor              ()
 {
     m_apTile  .reserve(FIELD_RESERVE_TILES);
     m_apEnemy .reserve(FIELD_RESERVE_ENEMIES);
