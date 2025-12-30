@@ -19,15 +19,15 @@ set_target_properties(
 
 target_sources(
     LastFall PRIVATE
-    ${BASE_DIRECTORY}/source/cDoor.cpp
-    ${BASE_DIRECTORY}/source/cEnemy.cpp
-    ${BASE_DIRECTORY}/source/cField.cpp
-    ${BASE_DIRECTORY}/source/cGame.cpp
-    ${BASE_DIRECTORY}/source/cInterface.cpp
-    ${BASE_DIRECTORY}/source/cLevel.cpp
-    ${BASE_DIRECTORY}/source/cPlayer.cpp
-    ${BASE_DIRECTORY}/source/cShadow.cpp
-    ${BASE_DIRECTORY}/source/cTile.cpp
+    ${BASE_DIRECTORY}/source/Door.cpp
+    ${BASE_DIRECTORY}/source/Enemy.cpp
+    ${BASE_DIRECTORY}/source/Field.cpp
+    ${BASE_DIRECTORY}/source/Game.cpp
+    ${BASE_DIRECTORY}/source/Interface.cpp
+    ${BASE_DIRECTORY}/source/Level.cpp
+    ${BASE_DIRECTORY}/source/Player.cpp
+    ${BASE_DIRECTORY}/source/Shadow.cpp
+    ${BASE_DIRECTORY}/source/Tile.cpp
     ${BASE_DIRECTORY}/source/application.cpp
     ${BASE_DIRECTORY}/source/main.cpp
 )

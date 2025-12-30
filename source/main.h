@@ -42,14 +42,14 @@
 
 // ****************************************************************
 // game headers
-#include "cPlayer.h"
-#include "cEnemy.h"
-#include "cTile.h"
-#include "cDoor.h"
-#include "cField.h"
-#include "cInterface.h"
-#include "cGame.h"
-#include "cShadow.h"
+#include "Player.h"
+#include "Enemy.h"
+#include "Tile.h"
+#include "Door.h"
+#include "Field.h"
+#include "Interface.h"
+#include "Game.h"
+#include "Shadow.h"
 
 
 // ****************************************************************
