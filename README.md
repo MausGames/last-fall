@@ -27,8 +27,8 @@ by [Tim Beek](https://timbeek.com) from [Drama Music Pack](https://timbeek.itch.
 
 <table>
     <tr>
-        <td><a href="material/screenshots/laf_screen_004.jpg?raw=true"><img src="material/screenshots/laf_screen_004t.jpg"></a></td>
-        <td><a href="material/screenshots/laf_screen_005.jpg?raw=true"><img src="material/screenshots/laf_screen_005t.jpg"></a></td>
-        <td><a href="material/screenshots/laf_screen_006.jpg?raw=true"><img src="material/screenshots/laf_screen_006t.jpg"></a></td>
+        <td><a href="material/screenshots/laf_screen_004.jpg"><img src="material/screenshots/laf_screen_004t.jpg"></a></td>
+        <td><a href="material/screenshots/laf_screen_005.jpg"><img src="material/screenshots/laf_screen_005t.jpg"></a></td>
+        <td><a href="material/screenshots/laf_screen_006.jpg"><img src="material/screenshots/laf_screen_006t.jpg"></a></td>
     </tr>
 </table>
