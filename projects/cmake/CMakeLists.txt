@@ -3,7 +3,14 @@ cmake_minimum_required(VERSION 3.31)
 set(BASE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../..)
 set(ENGINE_DIRECTORY ${BASE_DIRECTORY}/../core-engine)
 
-project(LastFall VERSION 1.2.0)
+project(
+    LastFall
+    VERSION 1.2.0
+    DESCRIPTION "Tricky arcade puzzler made for Ludum Dare 49"
+    HOMEPAGE_URL "https://www.maus-games.at"
+    LANGUAGES C CXX
+)
+
 add_subdirectory(${ENGINE_DIRECTORY}/projects/cmake CoreEngine)
 add_executable(LastFall)
 
@@ -13,8 +20,6 @@ set_target_properties(
     CXX_STANDARD 23
     CXX_SCAN_FOR_MODULES OFF
     DEBUG_POSTFIX _debug
-    BUILD_WITH_INSTALL_RPATH TRUE
-    INSTALL_RPATH $ORIGIN
 )
 
 target_sources(
@@ -64,6 +69,12 @@ else()
     )
 
     if(NOT CORE_DEBUG)
+
+        set_target_properties(
+            LastFall PROPERTIES
+            BUILD_WITH_INSTALL_RPATH TRUE
+            INSTALL_RPATH $ORIGIN
+        )
 
         add_custom_command(
             TARGET LastFall POST_BUILD
