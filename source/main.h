@@ -54,6 +54,8 @@
 
 // ****************************************************************
 // global variables
+extern coreMusicPlayer g_MusicPlayer;
+
 extern CInterface* const g_pInterface;
 extern CGame*      const g_pGame;
 extern CShadow*    const g_pShadow;

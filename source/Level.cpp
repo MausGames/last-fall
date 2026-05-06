@@ -24,6 +24,7 @@ void CField::__Setup(const coreUint8 iCheckpoint)
         this->__CreateTileExt(iX, iY, TILE_CHECKPOINT, iCurCheckpoint++);
     };
 
+    nCheckpointFunc      (X,   Y); X += 50;
     nCheckpointFunc      (X,   Y);
     this->__CreateTileExt(++X, Y,   4u);
     this->__CreateTileExt(++X, Y,   4u);
@@ -362,6 +363,8 @@ void CField::__Setup(const coreUint8 iCheckpoint)
 
     FOR_EACH(it, aPointList)
     {
+        if(it == aPointList.begin()) continue;
+
         for(coreUintW i = 0u; i < 3u; ++i)
         {
             const coreInt32 iPosX = it->X + Core::Rand->Int(2, 6) * (Core::Rand->Bool() ? -1 : 1);

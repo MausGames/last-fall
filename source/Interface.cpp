@@ -16,7 +16,7 @@ CInterface::CInterface()noexcept
 , m_Message     ()
 , m_aBack       {}
 , m_bIntro      (false)
-, m_fIntroValue (1.0f)
+, m_fIntroValue (2.5f)
 {
     m_Title.Construct("sadanasquare.ttf", 180u, 6u);
     m_Title.SetCenter(coreVector2(0.0f,0.2f));
@@ -75,9 +75,6 @@ void CInterface::Render()
 // ****************************************************************
 void CInterface::Move()
 {
-    if(!g_pGame->GetPlayer()->GetPosition().xy().IsNull())
-        m_bIntro = true;
-
     if(m_bIntro) m_fIntroValue.UpdateMax(-0.4f, 0.0f);
 
     const auto nSetAlphaFunc = [](coreObject2D* OUTPUT pObject, const coreFloat fAlpha)
@@ -86,7 +83,7 @@ void CInterface::Move()
         pObject->SetEnabled(fAlpha ? CORE_OBJECT_ENABLE_ALL : CORE_OBJECT_ENABLE_NOTHING);
     };
 
-    const coreFloat fAlpha = BLENDH3(m_fIntroValue);
+    const coreFloat fAlpha = m_bIntro ? BLENDH3(MIN1(m_fIntroValue)) : 0.0f;
     const coreFloat fOutro = BLENDH3(CLAMP01((g_pGame->GetOutro() - 4.0f) * 0.5f));
 
     nSetAlphaFunc(&m_Title,   fAlpha);

@@ -13,8 +13,9 @@
 CGame::CGame()noexcept
 : m_Player          ()
 , m_Field           ()
-, m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 2u : 0u)   // debug start
+, m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 3u : 1u)   // debug start
 , m_fOutro          (0.0f)
+, m_bStarted        (false)
 , m_vSmoothCam      (coreVector2(0.0f,0.0f))
 , m_pKickSound      (NULL)
 , m_pUnlockSound    (NULL)
@@ -112,14 +113,27 @@ void CGame::Move()
     if(bFalling || m_Player.GetLanding())
     {
         m_Player.SetFalling(bFalling);
-        if(!bFalling) m_Player.SetLanding(false);
+        if(!bFalling)
+        {
+            m_Player.SetLanding(false);
+
+            if(!m_bStarted)
+            {
+                m_bStarted = true;
+
+                g_MusicPlayer.Play();
+                g_pInterface->StartIntro();
+
+                Core::Input->ClearButtonAll();   // make sure the player is not falling down (so easily)
+            }
+        }
     }
 
     m_Player.Land();
 
     if(m_Player.GetPosition().z < GAME_HEIGHT * -1.0f)
     {
-        if(m_iLastCheckpoint == GAME_CHECKPOINT_END)
+        if(this->IsEnded())
         {
             m_fOutro.Update(1.0f);
 
@@ -157,7 +171,6 @@ void CGame::Move()
     const coreVector3 vCamPos = coreVector3(m_vSmoothCam, m_Player.GetPosition().z) - vCamDir * 40.0f;
 
     Core::Graphics->SetCamera(vCamPos, vCamDir, vCamOri);
-
     Core::Audio->SetListener(vCamPos, coreVector3(0.0f,0.0f,0.0f), vCamDir, vCamOri);
 }
 

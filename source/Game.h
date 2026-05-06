@@ -26,6 +26,8 @@ private:
     coreUint8 m_iLastCheckpoint;
     coreFlow  m_fOutro;
 
+    coreBool m_bStarted;
+
     coreVector2 m_vSmoothCam;
 
     coreSoundPtr m_pKickSound;
@@ -45,6 +47,10 @@ public:
     void PlayUnlockSound(const coreVector3 vPosition);
 
     inline void SetLastCheckpoint(const coreUint8 iLastCheckpoint) {if(m_iLastCheckpoint < iLastCheckpoint) m_iLastCheckpoint = iLastCheckpoint;}
+
+    inline coreBool IsStarted()const {return (m_bStarted);}
+    inline coreBool IsEnded  ()const {return (m_iLastCheckpoint == GAME_CHECKPOINT_END);}
+    inline coreBool IsRunning()const {return (this->IsStarted() && !this->IsEnded());}
 
     inline CPlayer*         GetPlayer()      {return &m_Player;}
     inline CField*          GetField ()      {return &m_Field;}

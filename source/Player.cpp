@@ -15,7 +15,7 @@ CPlayer::CPlayer()noexcept
 , m_vVelocity       (coreVector2(0.0f,0.0f))
 , m_fVelocityHeight (0.0f)
 , m_bFalling        (false)
-, m_bLanding        (true)
+, m_bLanding        (false)
 , m_Shadow          ()
 {
     this->DefineModel  ("object_player.md3z");

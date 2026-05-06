@@ -36,6 +36,8 @@ public:
 
     void Render();
     void Move();
+
+    inline void StartIntro() {m_bIntro = true;}
 };
 
 
