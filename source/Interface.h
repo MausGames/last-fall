@@ -22,8 +22,9 @@ private:
     coreLabel m_Title;
     coreLabel m_Name;
     coreLabel m_Message;
+    coreLabel m_Record;
 
-    coreObject2D m_aBack[3];
+    coreObject2D m_aBack[4];
 
     coreBool m_bIntro;
     coreFlow m_fIntroValue;

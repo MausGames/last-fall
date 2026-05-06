@@ -14,6 +14,7 @@ CInterface::CInterface()noexcept
 : m_Title       ()
 , m_Name        ()
 , m_Message     ()
+, m_Record      ()
 , m_aBack       {}
 , m_bIntro      (false)
 , m_fIntroValue (2.5f)
@@ -29,9 +30,15 @@ CInterface::CInterface()noexcept
     m_Name.SetText    ("A GAME BY MARTIN MAUERSICS");
 
     m_Message.Construct("sadanasquare.ttf", 80u, 4u);
+    m_Message.SetCenter(coreVector2(0.0f,0.1f));
     m_Message.SetColor3(INTERFACE_COLOR);
     m_Message.SetAlpha (0.0f);
     m_Message.SetText  ("THANK YOU FOR PLAYING");
+
+    m_Record.Construct("sadanasquare.ttf", 80u, 4u);
+    m_Record.SetCenter(coreVector2(0.0f,-0.1f));
+    m_Record.SetColor3(INTERFACE_COLOR);
+    m_Record.SetAlpha (0.0f);
 
     for(coreUintW i = 0u; i < ARRAY_SIZE(m_aBack); ++i)
     {
@@ -51,6 +58,10 @@ CInterface::CInterface()noexcept
     m_aBack[2].SetPosition(m_Message.GetPosition());
     m_aBack[2].SetSize    (coreVector2(1.0f,0.06f));
     m_aBack[2].SetCenter  (m_Message.GetCenter());
+
+    m_aBack[3].SetPosition(m_Record.GetPosition());
+    m_aBack[3].SetSize    (coreVector2(0.3f,0.06f));
+    m_aBack[3].SetCenter  (m_Record.GetCenter());
 }
 
 
@@ -67,6 +78,7 @@ void CInterface::Render()
         m_Title  .Render();
         m_Name   .Render();
         m_Message.Render();
+        m_Record .Render();
     }
     glEnable(GL_DEPTH_TEST);
 }
@@ -76,6 +88,12 @@ void CInterface::Render()
 void CInterface::Move()
 {
     if(m_bIntro) m_fIntroValue.UpdateMax(-0.4f, 0.0f);
+
+    if(g_pGame->GetOutro())
+    {
+        const coreFloat fTime = g_pGame->GetTime();
+        m_Record.SetText(PRINT("%02u:%02u.%02u", F_TO_UI(fTime) / 60u, F_TO_UI(fTime) % 60u, F_TO_UI(FRACT(fTime) * 100.0f)));
+    }
 
     const auto nSetAlphaFunc = [](coreObject2D* OUTPUT pObject, const coreFloat fAlpha)
     {
@@ -89,14 +107,17 @@ void CInterface::Move()
     nSetAlphaFunc(&m_Title,   fAlpha);
     nSetAlphaFunc(&m_Name,    fAlpha);
     nSetAlphaFunc(&m_Message, fOutro);
+    nSetAlphaFunc(&m_Record,  fOutro);
 
     m_Title  .Move();
     m_Name   .Move();
     m_Message.Move();
+    m_Record .Move();
 
     nSetAlphaFunc(&m_aBack[0], fAlpha * 0.1f);
     nSetAlphaFunc(&m_aBack[1], fAlpha * 0.1f);
     nSetAlphaFunc(&m_aBack[2], fOutro * 0.1f);
+    nSetAlphaFunc(&m_aBack[3], fOutro * 0.1f);
 
     for(coreUintW i = 0u; i < ARRAY_SIZE(m_aBack); ++i)
     {

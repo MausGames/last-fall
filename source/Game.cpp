@@ -14,6 +14,7 @@ CGame::CGame()noexcept
 : m_Player          ()
 , m_Field           ()
 , m_iLastCheckpoint (DEFINED(_CORE_DEBUG_) ? 3u : 1u)   // debug start
+, m_fTime           (0.0f)
 , m_fOutro          (0.0f)
 , m_bStarted        (false)
 , m_vSmoothCam      (coreVector2(0.0f,0.0f))
@@ -140,7 +141,7 @@ void CGame::Move()
             const coreFloat fAlpha = LERPH3(1.0f, 0.0f, MIN1(m_fOutro * 0.2f));
 
             m_Player.SetSize (coreVector3(1.0f,1.0f,1.0f) * PLAYER_SCALE * fAlpha);
-            m_Player.SetAlpha(fAlpha);
+            m_Player.SetAlpha(STEP(0.0f, 0.1f, fAlpha));
         }
         else
         {
@@ -156,6 +157,8 @@ void CGame::Move()
             m_vSmoothCam = vShift + m_Player.GetPosition().xy();
         }
     }
+
+    if(this->IsRunning()) m_fTime.Update(1.0f);
 
     const coreFloat fAlpha = 1.0f - STEPH3(0.0f, GAME_HEIGHT, ABS(m_Player.GetPosition().z));
 

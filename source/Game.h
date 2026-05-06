@@ -24,6 +24,7 @@ private:
     CField  m_Field;
 
     coreUint8 m_iLastCheckpoint;
+    coreFlow  m_fTime;
     coreFlow  m_fOutro;
 
     coreBool m_bStarted;
@@ -54,6 +55,7 @@ public:
 
     inline CPlayer*         GetPlayer()      {return &m_Player;}
     inline CField*          GetField ()      {return &m_Field;}
+    inline const coreFloat& GetTime  ()const {return m_fTime;}
     inline const coreFloat& GetOutro ()const {return m_fOutro;}
 };
 
