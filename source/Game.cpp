@@ -21,8 +21,8 @@ CGame::CGame()noexcept
 {
     m_Player.SetPosition(coreVector3(0.0f,0.0f,0.0f));
 
-    m_pKickSound   = Core::Manager::Resource->Get<coreSound>("kick.opus");
-    m_pUnlockSound = Core::Manager::Resource->Get<coreSound>("unlock.opus");
+    m_pKickSound   = Core::Manager::Resource->Get("kick.opus");
+    m_pUnlockSound = Core::Manager::Resource->Get("unlock.opus");
 }
 
 
